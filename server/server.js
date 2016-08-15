@@ -1,5 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var _ = require("underscore");
 
 module.exports = function(port, middleware, callback) {
     var app = express();
@@ -32,6 +33,7 @@ module.exports = function(port, middleware, callback) {
     app.delete("/api/todo/:id", function(req, res) {
         var id = req.params.id;
         var todo = getTodo(id);
+        console.log("Dave find function returned " + todo);
         if (todo) {
             todos = todos.filter(function(otherTodo) {
                 return otherTodo !== todo;
@@ -43,9 +45,9 @@ module.exports = function(port, middleware, callback) {
     });
 
     function getTodo(id) {
-        return todos.filter(function(todo) {
+        return _.find(todos, function(todo) {
             return todo.id === id;
-        })[0];
+        });
     }
 
     var server = app.listen(port, callback);
