@@ -52,9 +52,18 @@ function reloadTodoList() {
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
             listItem.textContent = todo.title;
+            listItem.appendChild(createButton(todo.id, "Delete"));
             todoList.appendChild(listItem);
         });
     });
+}
+
+function createButton(id, text)
+{
+  var button = document.createElement("button");
+  button.innerHTML = text;
+  button.setAttribute("id", id);
+  return button;
 }
 
 reloadTodoList();
