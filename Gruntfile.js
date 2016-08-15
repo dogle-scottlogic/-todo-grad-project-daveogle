@@ -36,7 +36,7 @@ module.exports = function(grunt) {
             ci: {
                 src: ["test/**/*.js"],
                 options: {
-                    quiet: true
+                    quiet: false
                 }
             },
             options: {
