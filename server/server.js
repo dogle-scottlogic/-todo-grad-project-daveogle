@@ -33,7 +33,6 @@ module.exports = function(port, middleware, callback) {
     app.delete("/api/todo/:id", function(req, res) {
         var id = req.params.id;
         var todo = getTodo(id);
-        console.log("Dave find function returned " + todo);
         if (todo) {
             todos = todos.filter(function(otherTodo) {
                 return otherTodo !== todo;
