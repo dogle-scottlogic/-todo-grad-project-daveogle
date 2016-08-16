@@ -23,3 +23,30 @@ h1 {
     line-height: 34px;
     color: rgba(255, 255, 255, 0.87);
 }
+
+.Delete_Button {
+  display: inline-block;
+  margin: 6px 11px;
+  margin-top: 6px;
+  margin-right: 11px;
+  margin-bottom: 6px;
+  margin-left: 11px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #af4c6c;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.Delete_Button:hover {background-color: #732f51}
+
+.Delete_Button:active {
+  background-color: #c32574;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
