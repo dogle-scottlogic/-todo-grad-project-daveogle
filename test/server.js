@@ -137,7 +137,7 @@ describe("server", function() {
                 });
             });
         });
-        it("responds with the location of the newly added resource", function(done) {
+        it("responds with the location of the newly updated resource", function(done) {
             request.post({
                 url: todoListUrl,
                 json: {
@@ -158,16 +158,19 @@ describe("server", function() {
                     title: "This is a TODO item",
                     done: false
                 }
-            }, function(error, response) {
-                var oldId = response.headers.location;
-                console.log("Old id is " + oldId);
-                request.get(todoListUrl, function(error, response, body) {
-                    assert.deepEqual(JSON.parse(body), [{
-                        title: "This is a TODO item",
-                        done: false,
-                        id: oldId[oldId.length - 1]
-                    }]);
-                    done();
+            }, function () {
+                request.post({
+                    url: todoListUrl,
+                    json: {
+                        title: "This is a second TODO item",
+                        done: false
+                    }
+                }, function(error, response) {
+                    var oldId = response.headers.location[response.headers.location.length - 1];
+                    request.put(todoListUrl + "/" + oldId, function(error, response) {
+                        assert.equal(response.headers.location, "/api/todo/" + oldId);
+                        done();
+                    });
                 });
             });
         });
