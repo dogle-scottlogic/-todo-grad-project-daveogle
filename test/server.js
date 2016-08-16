@@ -116,4 +116,60 @@ describe("server", function() {
             });
         });
     });
+    describe("update a todo", function() {
+        it("responds with status code 404 if there is no such item", function(done) {
+            request.put(todoListUrl + "/0", function(error, response) {
+                assert.equal(response.statusCode, 404);
+                done();
+            });
+        });
+        it("responds with status code 200", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item",
+                    done: false
+                }
+            }, function() {
+                request.put(todoListUrl + "/0", function(error, response) {
+                    assert.equal(response.statusCode, 200);
+                    done();
+                });
+            });
+        });
+        it("responds with the location of the newly added resource", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item",
+                    done: false
+                }
+            }, function() {
+                request.put(todoListUrl + "/0", function(error, response) {
+                    assert.equal(response.headers.location, "/api/todo/0");
+                    done();
+                });
+            });
+        });
+        it("updates the todo at the same point in the list of todos", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item",
+                    done: false
+                }
+            }, function(error, response) {
+                var oldId = response.headers.location;
+                console.log("Old id is " + oldId);
+                request.get(todoListUrl, function(error, response, body) {
+                    assert.deepEqual(JSON.parse(body), [{
+                        title: "This is a TODO item",
+                        done: false,
+                        id: oldId[oldId.length - 1]
+                    }]);
+                    done();
+                });
+            });
+        });
+    });
 });

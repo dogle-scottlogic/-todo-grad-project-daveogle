@@ -45,11 +45,9 @@ module.exports = function(port, middleware, callback) {
 
     // Update
     app.put("/api/todo/:id", function(req, res) {
-        var todo = req.body;
-        todo.id = req.params.id;
-        var todoIndex = todos.findIndex(x => x.id == todo.id);
-        if(todoIndex != -1) {
-            todos[todoIndex] = todo;
+        var todo = getTodo(req.params.id);
+        if (todo) {
+            todo.title = req.body.title;
             res.set("Location", "/api/todo/" + todo.id);
             res.sendStatus(200);
         } else {
