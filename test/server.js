@@ -158,17 +158,20 @@ describe("server", function() {
                     title: "This is a TODO item",
                     done: false
                 }
-            }, function () {
-                request.post({
-                    url: todoListUrl,
+            }, function(error, response) {
+                var oldId = response.headers.location[response.headers.location.length - 1];
+                request.put({
+                    url: todoListUrl + "/" + oldId,
                     json: {
-                        title: "This is a second TODO item",
-                        done: false
+                        title: "This is a updated Todo Item",
                     }
                 }, function(error, response) {
-                    var oldId = response.headers.location[response.headers.location.length - 1];
-                    request.put(todoListUrl + "/" + oldId, function(error, response) {
-                        assert.equal(response.headers.location, "/api/todo/" + oldId);
+                    request.get(todoListUrl, function(error, response, body) {
+                        assert.deepEqual(JSON.parse(body), [{
+                            title: "This is a updated Todo Item",
+                            done: false,
+                            id: oldId
+                        }]);
                         done();
                     });
                 });
