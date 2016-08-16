@@ -119,11 +119,11 @@ testing.describe("end to end", function() {
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 1);
             });
-            helpers.elementExistsById("0").then(function(elements) {
-                assert.equal(elements.length, 0);
+            helpers.elementExistsById("0").then(function(result) {
+                assert.isFalse(result);
             });
-            helpers.elementExistsById("1").then(function(elements) {
-                assert.equal(elements.length, 1);
+            helpers.elementExistsById("1").then(function(result) {
+                assert.isTrue(result);
             });
         });
     });

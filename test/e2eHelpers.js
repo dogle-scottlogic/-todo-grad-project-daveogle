@@ -75,7 +75,12 @@ module.exports.getTodoList = function() {
 };
 
 module.exports.elementExistsById = function(id) {
-    return driver.findElements(webdriver.By.id(id));
+    return driver.findElement(webdriver.By.id(id)).then(function(arg) {
+        return true;
+    }, function(err) {
+        return false;
+    });
+    //return driver.findElements(webdriver.By.id(id));
     //var elem = driver.findElement(webdriver.By.id(id));
     //driver.wait(webdriver.until.elementIsVisible(elem), 5000);
 };
