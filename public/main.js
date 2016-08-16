@@ -44,7 +44,7 @@ function getTodoList(callback) {
 
 function deleteTodo() {
     var createRequest = new XMLHttpRequest();
-    createRequest.open("DELETE", "/api/todo/" + this.id);
+    createRequest.open("DELETE", "/api/todo/" + this.id[this.id.length  - 1]);
     createRequest.onload = function() {
         if (this.status === 200) {
             reloadTodoList();
@@ -54,6 +54,10 @@ function deleteTodo() {
         }
     };
     createRequest.send();
+}
+
+function completeTodo() {
+    console.log("COMPLETE");
 }
 
 function reloadTodoList() {
@@ -66,9 +70,12 @@ function reloadTodoList() {
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
             listItem.textContent = todo.title;
-            var deleteButton = createButton(todo.id, "Delete", "Delete_Button");
+            var deleteButton = createButton("delete_" + todo.id, "Delete", "Delete_Button");
+            var completeButton = createButton("complete_" + todo.id, "Complete", "Complete_Button");
             deleteButton.onclick = deleteTodo;
+            completeButton.onclick = completeTodo;
             listItem.appendChild(deleteButton);
+            listItem.appendChild(completeButton);
             todoList.appendChild(listItem);
         });
     });

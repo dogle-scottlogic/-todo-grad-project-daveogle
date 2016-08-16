@@ -88,6 +88,7 @@ module.exports.addTodo = function(text) {
 };
 
 module.exports.deleteTodo = function(id) {
+    console.log(id);
     driver.findElement(webdriver.By.id(id)).click();
 };
 

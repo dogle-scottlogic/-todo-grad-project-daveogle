@@ -75,7 +75,7 @@ testing.describe("end to end", function() {
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 1);
             });
-            helpers.deleteTodo("0");
+            helpers.deleteTodo("delete_0");
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 0);
             });
@@ -87,7 +87,7 @@ testing.describe("end to end", function() {
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 1);
             });
-            helpers.deleteTodo("0");
+            helpers.deleteTodo("delete_0");
             helpers.getErrorText().then(function(text) {
                 assert.equal(text, "Failed to delete list item. Server returned 500 - Internal Server Error");
             });
@@ -99,11 +99,11 @@ testing.describe("end to end", function() {
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 2);
             });
-            helpers.deleteTodo("0");
+            helpers.deleteTodo("delete_0");
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 1);
             });
-            helpers.deleteTodo("1");
+            helpers.deleteTodo("delete_1");
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 0);
             });
@@ -115,14 +115,14 @@ testing.describe("end to end", function() {
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 2);
             });
-            helpers.deleteTodo("0");
+            helpers.deleteTodo("delete_0");
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 1);
             });
-            helpers.elementExistsById("0").then(function(result) {
+            helpers.elementExistsById("delete_0").then(function(result) {
                 assert.isFalse(result);
             });
-            helpers.elementExistsById("1").then(function(result) {
+            helpers.elementExistsById("delete_1").then(function(result) {
                 assert.isTrue(result);
             });
         });
