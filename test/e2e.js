@@ -65,5 +65,66 @@ testing.describe("end to end", function() {
             });
         });
     });
+    testing.describe("on delete todo item", function() {
+        testing.it("deletes the todo item from the list", function() {
+            helpers.navigateToSite();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.deleteTodo("0");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+        });
+        testing.it("displays an error if the request fails", function() {
+            helpers.setupErrorRoute("delete", "/api/todo/0");
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.deleteTodo("0");
+            helpers.getErrorText().then(function(text) {
+                assert.equal(text, "Failed to delete list item. Server returned 500 - Internal Server Error");
+            });
+        });
+        testing.it("can delete multiple items", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("Another new todo item");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 2);
+            });
+            helpers.deleteTodo("0");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.deleteTodo("1");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+        });
+        testing.it("can delete one item from a list", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("Another new todo item");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 2);
+            });
+            helpers.deleteTodo("0");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.elementExistsById("0").then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            helpers.elementExistsById("1").then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+        });
+    });
 });
-

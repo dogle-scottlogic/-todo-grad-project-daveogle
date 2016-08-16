@@ -42,21 +42,17 @@ function getTodoList(callback) {
     createRequest.send();
 }
 
-function deleteTodo()
-{
+function deleteTodo() {
     var createRequest = new XMLHttpRequest();
     createRequest.open("DELETE", "/api/todo/" + this.id);
-    createRequest.onload = function()
-    {
-      if(this.status === 200)
-      {
-        reloadTodoList();
-      }
-      else
-      {
-          error.textContent = "Failed to delete list item. Sever returned " + this.status + " - " + this.responseText;
-      }
-    }
+    createRequest.onload = function() {
+        if (this.status === 200) {
+            reloadTodoList();
+        } else {
+            error.textContent = "Failed to delete list item. Server returned " + this.status;
+            error.textContent += " - " + this.responseText;
+        }
+    };
     createRequest.send();
 }
 
@@ -78,13 +74,12 @@ function reloadTodoList() {
     });
 }
 
-function createButton(id, text, className)
-{
-  var button = document.createElement("button");
-  button.innerHTML = text;
-  button.setAttribute("id", id);
-  button.className = className;
-  return button;
+function createButton(id, text, className) {
+    var button = document.createElement("button");
+    button.innerHTML = text;
+    button.setAttribute("id", id);
+    button.className = className;
+    return button;
 }
 
 reloadTodoList();
