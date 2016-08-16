@@ -137,7 +137,7 @@ describe("server", function() {
                 });
             });
         });
-        it("responds with the location of the newly added resource", function(done) {
+        it("responds with the location of the newly updated resource", function(done) {
             request.post({
                 url: todoListUrl,
                 json: {
@@ -159,15 +159,21 @@ describe("server", function() {
                     done: false
                 }
             }, function(error, response) {
-                var oldId = response.headers.location;
-                console.log("Old id is " + oldId);
-                request.get(todoListUrl, function(error, response, body) {
-                    assert.deepEqual(JSON.parse(body), [{
-                        title: "This is a TODO item",
-                        done: false,
-                        id: oldId[oldId.length - 1]
-                    }]);
-                    done();
+                var oldId = response.headers.location[response.headers.location.length - 1];
+                request.put({
+                    url: todoListUrl + "/" + oldId,
+                    json: {
+                        title: "This is a updated Todo Item",
+                    }
+                }, function(error, response) {
+                    request.get(todoListUrl, function(error, response, body) {
+                        assert.deepEqual(JSON.parse(body), [{
+                            title: "This is a updated Todo Item",
+                            done: false,
+                            id: oldId
+                        }]);
+                        done();
+                    });
                 });
             });
         });
