@@ -57,7 +57,21 @@ function deleteTodo() {
 }
 
 function completeTodo() {
-    console.log("COMPLETE");
+    var complete = true;
+    var createRequest = new XMLHttpRequest();
+    createRequest.open("PUT", "/api/todo/" + this.id[this.id.length  - 1]);
+    createRequest.setRequestHeader("Content-type", "application/json");
+    createRequest.send(JSON.stringify({
+        isComplete : complete
+    }));
+    createRequest.onload = function() {
+        if (this.status === 200) {
+            console.log("Update success");
+        } else {
+            error.textContent = "Failed to update list item. Server returned " + this.status;
+            error.textContent += " - " + this.responseText;
+        }
+    };
 }
 
 function reloadTodoList() {
