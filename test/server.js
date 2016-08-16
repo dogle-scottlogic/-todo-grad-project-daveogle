@@ -40,7 +40,6 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function(error, response) {
                 assert.equal(response.statusCode, 201);
@@ -52,7 +51,6 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function(error, response) {
                 assert.equal(response.headers.location, "/api/todo/0");
@@ -64,13 +62,12 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function() {
                 request.get(todoListUrl, function(error, response, body) {
                     assert.deepEqual(JSON.parse(body), [{
                         title: "This is a TODO item",
-                        done: false,
+                        isComplete: false,
                         id: "0"
                     }]);
                     done();
@@ -156,7 +153,6 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function(error, response) {
                 var oldId = response.headers.location[response.headers.location.length - 1];
@@ -169,7 +165,7 @@ describe("server", function() {
                     request.get(todoListUrl, function(error, response, body) {
                         assert.deepEqual(JSON.parse(body), [{
                             title: "This is a updated Todo Item",
-                            done: false,
+                            isComplete: false,
                             id: oldId
                         }]);
                         done();
