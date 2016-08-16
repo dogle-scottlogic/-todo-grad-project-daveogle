@@ -80,9 +80,6 @@ module.exports.elementExistsById = function(id) {
     }, function(err) {
         return false;
     });
-    //return driver.findElements(webdriver.By.id(id));
-    //var elem = driver.findElement(webdriver.By.id(id));
-    //driver.wait(webdriver.until.elementIsVisible(elem), 5000);
 };
 
 module.exports.addTodo = function(text) {
