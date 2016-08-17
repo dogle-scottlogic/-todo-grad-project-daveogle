@@ -99,18 +99,19 @@ testing.describe("end to end", function() {
         });
         testing.it("can delete multiple items", function() {
             helpers.navigateToSite();
-            helpers.addTodo("New todo item");
-            helpers.addTodo("Another new todo item");
+            for (var i = 0; i < 11; i++) {
+                helpers.addTodo("New todo item" + i);
+            }
             helpers.getTodoList().then(function(elements) {
-                assert.equal(elements.length, 2);
+                assert.equal(elements.length, 11);
+            });
+            helpers.deleteTodo("delete_10");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 10);
             });
             helpers.deleteTodo("delete_0");
             helpers.getTodoList().then(function(elements) {
-                assert.equal(elements.length, 1);
-            });
-            helpers.deleteTodo("delete_1");
-            helpers.getTodoList().then(function(elements) {
-                assert.equal(elements.length, 0);
+                assert.equal(elements.length, 9);
             });
         });
         testing.it("can delete one item from a list", function() {

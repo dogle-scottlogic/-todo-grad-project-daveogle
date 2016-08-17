@@ -44,7 +44,8 @@ function getTodoList(callback) {
 
 function deleteTodo() {
     var createRequest = new XMLHttpRequest();
-    createRequest.open("DELETE", "/api/todo/" + this.id[this.id.length  - 1]);
+    var path = this.id.replace("delete_", "/api/todo/");
+    createRequest.open("DELETE", path);
     createRequest.onload = function() {
         if (this.status === 200) {
             reloadTodoList();
@@ -59,7 +60,8 @@ function deleteTodo() {
 function completeTodo() {
     var complete = true;
     var createRequest = new XMLHttpRequest();
-    createRequest.open("PUT", "/api/todo/" + this.id[this.id.length  - 1]);
+    var path = this.id.replace("complete_", "/api/todo/");
+    createRequest.open("PUT", path);
     createRequest.setRequestHeader("Content-type", "application/json");
     createRequest.send(JSON.stringify({
         isComplete : complete
