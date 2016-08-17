@@ -24,6 +24,10 @@ h1 {
     color: rgba(255, 255, 255, 0.87);
 }
 
+ul {
+    list-style: none;
+}
+
 li {
     padding: 2.5px;
 }
@@ -40,6 +44,16 @@ li {
 	text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 75px #ff0000;
 	letter-spacing: 5px;
 	font: 30px 'MisoRegular';
+}
+
+.todo_item_incomplete:before {
+    content: "• ";
+    color: #e00e0e;
+}
+
+.todo_item_complete:before {
+    content: "• ";
+    color: #2e8a0f;
 }
 
 .button {
