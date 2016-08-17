@@ -14,6 +14,8 @@ describe("server", function() {
     afterEach(function() {
         serverInstance.close();
     });
+
+    // Get
     describe("get list of todos", function() {
         it("responds with status code 200", function(done) {
             request(todoListUrl, function(error, response) {
@@ -34,6 +36,8 @@ describe("server", function() {
             });
         });
     });
+
+    // Post
     describe("create a new todo", function() {
         it("responds with status code 201", function(done) {
             request.post({
@@ -75,6 +79,8 @@ describe("server", function() {
             });
         });
     });
+
+    // Delete
     describe("delete a todo", function() {
         it("responds with status code 404 if there is no such item", function(done) {
             request.del(todoListUrl + "/0", function(error, response) {
@@ -101,7 +107,7 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
+                    isComplete: false
                 }
             }, function() {
                 request.del(todoListUrl + "/0", function() {
@@ -113,6 +119,8 @@ describe("server", function() {
             });
         });
     });
+
+    // Update
     describe("update a todo", function() {
         it("responds with status code 404 if there is no such item", function(done) {
             request.put(todoListUrl + "/0", function(error, response) {
@@ -196,6 +204,120 @@ describe("server", function() {
                             id: oldId
                         }]);
                         done();
+                    });
+                });
+            });
+        });
+    });
+
+    // Delete all complete
+    describe("delete all completed todos", function() {
+        it("Removes one completed item", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a complete TODO item",
+                }
+            }, function() {
+                request.put({
+                    url: todoListUrl + "/0",
+                    json: {
+                        isComplete: true
+                    }
+                }, function() {
+                    request.del(todoListUrl + "/complete", function() {
+                        request.get(todoListUrl, function(error, response, body) {
+                            assert.deepEqual(JSON.parse(body), []);
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+        it("Removes multiple completed item", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a complete TODO item",
+                }
+            }, function() {
+                request.post({
+                    url: todoListUrl,
+                    json: {
+                        title: "This is a second complete TODO item",
+                    }
+                }, function() {
+                    request.put({
+                        url: todoListUrl + "/0",
+                        json: {
+                            isComplete: true
+                        }
+                    }, function() {
+                        request.put({
+                            url: todoListUrl + "/1",
+                            json: {
+                                isComplete: true
+                            }
+                        }, function() {
+                            request.del(todoListUrl + "/complete", function() {
+                                request.get(todoListUrl, function(error, response, body) {
+                                    assert.deepEqual(JSON.parse(body), []);
+                                    done();
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        it("Removes no items if none are completed", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a complete TODO item",
+                }
+            }, function() {
+                request.post({
+                    url: todoListUrl,
+                    json: {
+                        title: "This is a second complete TODO item",
+                    }
+                }, function() {
+                    request.del(todoListUrl + "/complete", function() {
+                        request.get(todoListUrl, function(error, response, body) {
+                            assert.deepEqual(JSON.parse(body), [{
+                                title: "This is a complete TODO item",
+                                isComplete: false,
+                                id: "0"
+                            }, {
+                                title: "This is a second complete TODO item",
+                                isComplete: false,
+                                id: "1"
+                            }]);
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+        it("Responds with 200 status code", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a complete TODO item",
+                }
+            }, function() {
+                request.put({
+                    url: todoListUrl + "/0",
+                    json: {
+                        isComplete: true
+                    }
+                }, function() {
+                    request.del(todoListUrl + "/complete", function() {
+                        request.get(todoListUrl, function(error, response, body) {
+                            assert.equal(response.statusCode, 200);
+                            done();
+                        });
                     });
                 });
             });

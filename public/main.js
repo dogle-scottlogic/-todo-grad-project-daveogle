@@ -114,7 +114,7 @@ function reloadTodoList() {
             todoList.appendChild(listItem);
         });
         countLabel.textContent = "You have " + leftTodo + " tasks left to do!";
-        if(leftTodo < todos.length) {
+        if (leftTodo < todos.length) {
             todoList.appendChild(clearCompleteButton);
             clearCompleteButton.onclick = clearComplete;
         }
