@@ -91,6 +91,14 @@ module.exports.deleteTodo = function(id) {
     driver.findElement(webdriver.By.id(id)).click();
 };
 
+module.exports.completeTodo = function(id) {
+    driver.findElement(webdriver.By.id(id)).click();
+};
+
+module.exports.getElementClass = function(element) {
+    return element.getAttribute("class");
+};
+
 module.exports.setupErrorRoute = function(action, route) {
     if (action === "get") {
         router.get(route, function(req, res) {

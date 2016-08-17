@@ -1,6 +1,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var _ = require("underscore");
+var path = require("path");
+var appDir = path.dirname(require.main.filename);
 
 module.exports = function(port, middleware, callback) {
     var app = express();
@@ -18,6 +20,7 @@ module.exports = function(port, middleware, callback) {
     app.post("/api/todo", function(req, res) {
         var todo = req.body;
         todo.id = latestId.toString();
+        todo.isComplete = false;
         latestId++;
         todos.push(todo);
         res.set("Location", "/api/todo/" + todo.id);
@@ -47,7 +50,11 @@ module.exports = function(port, middleware, callback) {
     app.put("/api/todo/:id", function(req, res) {
         var todo = getTodo(req.params.id);
         if (todo) {
-            todo.title = req.body.title;
+            for (var param in req.body) {
+                if (param !== "id") {
+                    todo[param] = req.body[param];
+                }
+            }
             res.set("Location", "/api/todo/" + todo.id);
             res.sendStatus(200);
         } else {

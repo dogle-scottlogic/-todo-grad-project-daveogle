@@ -40,7 +40,6 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function(error, response) {
                 assert.equal(response.statusCode, 201);
@@ -52,7 +51,6 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function(error, response) {
                 assert.equal(response.headers.location, "/api/todo/0");
@@ -64,13 +62,12 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function() {
                 request.get(todoListUrl, function(error, response, body) {
                     assert.deepEqual(JSON.parse(body), [{
                         title: "This is a TODO item",
-                        done: false,
+                        isComplete: false,
                         id: "0"
                     }]);
                     done();
@@ -156,7 +153,6 @@ describe("server", function() {
                 url: todoListUrl,
                 json: {
                     title: "This is a TODO item",
-                    done: false
                 }
             }, function(error, response) {
                 var oldId = response.headers.location[response.headers.location.length - 1];
@@ -169,7 +165,34 @@ describe("server", function() {
                     request.get(todoListUrl, function(error, response, body) {
                         assert.deepEqual(JSON.parse(body), [{
                             title: "This is a updated Todo Item",
-                            done: false,
+                            isComplete: false,
+                            id: oldId
+                        }]);
+                        done();
+                    });
+                });
+            });
+        });
+        it("does not update the id of a todo item", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item",
+                }
+            }, function(error, response) {
+                var oldId = response.headers.location[response.headers.location.length - 1];
+                request.put({
+                    url: todoListUrl + "/" + oldId,
+                    json: {
+                        id: "50",
+                        title: "This is a updated Todo Item",
+                        isComplete: true
+                    }
+                }, function(error, response) {
+                    request.get(todoListUrl, function(error, response, body) {
+                        assert.deepEqual(JSON.parse(body), [{
+                            title: "This is a updated Todo Item",
+                            isComplete: true,
                             id: oldId
                         }]);
                         done();

@@ -24,13 +24,31 @@ h1 {
     color: rgba(255, 255, 255, 0.87);
 }
 
+li {
+    padding: 2.5px;
+}
+
+.todo_item_complete {
+	color: #000;
+	text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #00ff13, 0 0 30px #00ff13, 0 0 40px #00ff13, 0 0 50px #00ff13, 0 0 75px #00ff13;
+	letter-spacing: 5px;
+	font: 30px 'MisoRegular';
+}
+
+.todo_item_incomplete {
+	color: #000;
+	text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 75px #ff0000;
+	letter-spacing: 5px;
+	font: 30px 'MisoRegular';
+}
+
 .Delete_Button {
   display: inline-block;
   margin: 6px 11px;
   margin-top: 6px;
-  margin-right: 11px;
+  margin-right: 1px;
   margin-bottom: 6px;
-  margin-left: 11px;
+  margin-left: 15px;
   font-size: 20px;
   cursor: pointer;
   text-align: center;

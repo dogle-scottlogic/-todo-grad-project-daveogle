@@ -44,7 +44,8 @@ function getTodoList(callback) {
 
 function deleteTodo() {
     var createRequest = new XMLHttpRequest();
-    createRequest.open("DELETE", "/api/todo/" + this.id);
+    var path = this.id.replace("delete_", "/api/todo/");
+    createRequest.open("DELETE", path);
     createRequest.onload = function() {
         if (this.status === 200) {
             reloadTodoList();
@@ -56,6 +57,25 @@ function deleteTodo() {
     createRequest.send();
 }
 
+function completeTodo() {
+    var complete = true;
+    var createRequest = new XMLHttpRequest();
+    var path = this.id.replace("complete_", "/api/todo/");
+    createRequest.open("PUT", path);
+    createRequest.setRequestHeader("Content-type", "application/json");
+    createRequest.send(JSON.stringify({
+        isComplete : complete
+    }));
+    createRequest.onload = function() {
+        if (this.status === 200) {
+            reloadTodoList();
+        } else {
+            error.textContent = "Failed to update list item. Server returned " + this.status;
+            error.textContent += " - " + this.responseText;
+        }
+    };
+}
+
 function reloadTodoList() {
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
@@ -65,10 +85,19 @@ function reloadTodoList() {
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
+            if (todo.isComplete) {
+                listItem.className = "todo_item_complete";
+            }
+            else {
+                listItem.className = "todo_item_incomplete";
+            }
             listItem.textContent = todo.title;
-            var deleteButton = createButton(todo.id, "Delete", "Delete_Button");
+            var deleteButton = createButton("delete_" + todo.id, "Delete", "Delete_Button");
+            var completeButton = createButton("complete_" + todo.id, "Complete", "Delete_Button");
             deleteButton.onclick = deleteTodo;
+            completeButton.onclick = completeTodo;
             listItem.appendChild(deleteButton);
+            listItem.appendChild(completeButton);
             todoList.appendChild(listItem);
         });
     });
