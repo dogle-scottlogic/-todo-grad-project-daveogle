@@ -12,6 +12,7 @@ testing.describe("end to end", function() {
         helpers.reportCoverage();
     });
 
+    // Page load
     testing.describe("on page load", function() {
         testing.it("displays TODO title", function() {
             helpers.navigateToSite();
@@ -33,6 +34,8 @@ testing.describe("end to end", function() {
             });
         });
     });
+
+    // Create
     testing.describe("on create todo item", function() {
         testing.it("clears the input field", function() {
             helpers.navigateToSite();
@@ -65,6 +68,8 @@ testing.describe("end to end", function() {
             });
         });
     });
+
+    //Delete
     testing.describe("on delete todo item", function() {
         testing.it("deletes the todo item from the list", function() {
             helpers.navigateToSite();
@@ -124,6 +129,47 @@ testing.describe("end to end", function() {
             });
             helpers.elementExistsById("delete_1").then(function(result) {
                 assert.isTrue(result);
+            });
+        });
+    });
+
+    // Update
+    testing.describe("on complete todo item", function() {
+        testing.it("changes the formating of the list item when complete is clicked", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.getElementClass(elements[0]).then(function(className) {
+                    assert.equal(className, "todo_item_incomplete");
+                });
+            });
+            helpers.completeTodo("complete_0");
+            helpers.getTodoList().then(function(elements) {
+                helpers.getElementClass(elements[0]).then(function(className) {
+                    assert.equal(className, "todo_item_complete");
+                });
+            });
+        });
+        testing.it("does not change the formating of the list item when complete is not clicked", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("New todo item");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 2);
+            });
+            helpers.getTodoList().then(function(elements) {
+                helpers.getElementClass(elements[0]).then(function(className) {
+                    assert.equal(className, "todo_item_incomplete");
+                });
+            });
+            helpers.completeTodo("complete_1");
+            helpers.getTodoList().then(function(elements) {
+                helpers.getElementClass(elements[0]).then(function(className) {
+                    assert.equal(className, "todo_item_incomplete");
+                });
             });
         });
     });

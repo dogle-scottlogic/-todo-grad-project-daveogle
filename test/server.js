@@ -173,5 +173,32 @@ describe("server", function() {
                 });
             });
         });
+        it("does not update the id of a todo item", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item",
+                }
+            }, function(error, response) {
+                var oldId = response.headers.location[response.headers.location.length - 1];
+                request.put({
+                    url: todoListUrl + "/" + oldId,
+                    json: {
+                        id: "50",
+                        title: "This is a updated Todo Item",
+                        isComplete: true
+                    }
+                }, function(error, response) {
+                    request.get(todoListUrl, function(error, response, body) {
+                        assert.deepEqual(JSON.parse(body), [{
+                            title: "This is a updated Todo Item",
+                            isComplete: true,
+                            id: oldId
+                        }]);
+                        done();
+                    });
+                });
+            });
+        });
     });
 });
