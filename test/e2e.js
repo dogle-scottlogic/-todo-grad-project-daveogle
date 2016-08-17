@@ -174,4 +174,96 @@ testing.describe("end to end", function() {
             });
         });
     });
+
+    //Count Display
+    testing.describe("On updating incomplete counter message", function() {
+        testing.it("should start at 0", function() {
+            helpers.navigateToSite();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 0 tasks left to do!");
+            });
+        });
+        testing.it("should increment with each task added", function() {
+            helpers.navigateToSite();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            for (var i = 0; i < 10; i++) {
+                helpers.addTodo("New todo " + i);
+            }
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 10 tasks left to do!");
+            });
+        });
+        testing.it("should decrement with each incomplete task removed", function() {
+            helpers.navigateToSite();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            for (var i = 0; i < 10; i++) {
+                helpers.addTodo("New todo " + i);
+            }
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 10);
+            });
+            helpers.deleteTodo("delete_9");
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 9 tasks left to do!");
+            });
+            helpers.deleteTodo("delete_8");
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 8 tasks left to do!");
+            });
+        });
+        testing.it("should decrement with each task completed", function() {
+            helpers.navigateToSite();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            for (var i = 0; i < 10; i++) {
+                helpers.addTodo("New todo " + i);
+            }
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 10);
+            });
+            helpers.completeTodo("complete_9");
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 9 tasks left to do!");
+            });
+            helpers.completeTodo("complete_8");
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 8 tasks left to do!");
+            });
+        });
+        testing.it("should not decrement with each complete task removed", function() {
+            helpers.navigateToSite();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            for (var i = 0; i < 10; i++) {
+                helpers.addTodo("New todo " + i);
+            }
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 10);
+            });
+            helpers.deleteTodo("delete_9");
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 9 tasks left to do!");
+            });
+            helpers.completeTodo("complete_8");
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 8 tasks left to do!");
+            });
+            helpers.deleteTodo("delete_8");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 8);
+            });
+            helpers.getCounterMessage().then(function(message) {
+                assert.equal(message, "You have 8 tasks left to do!");
+            });
+        });
+    });
 });

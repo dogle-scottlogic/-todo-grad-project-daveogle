@@ -68,3 +68,7 @@ li {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+
+#count-label {
+    margin:2%;
+}
