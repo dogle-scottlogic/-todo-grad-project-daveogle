@@ -4,7 +4,7 @@ var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
-var clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "Button");
+var clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "Delete_Button");
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
