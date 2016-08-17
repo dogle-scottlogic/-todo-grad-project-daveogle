@@ -32,15 +32,13 @@ module.exports = function(port, middleware, callback) {
 
     // Delete
     app.delete("/api/todo/:id", function(req, res) {
-        var deleted;
         var id = req.params.id;
         if (id === "complete") {
             deleteComplete();
             res.sendStatus(200);
         }
         else {
-            deleted = deleteTodo(id);
-            if (deleted) {
+            if (deleteTodo(id)) {
                 res.sendStatus(200);
             } else {
                 res.sendStatus(404);
@@ -71,14 +69,10 @@ module.exports = function(port, middleware, callback) {
     }
 
     function deleteComplete() {
-        var toRemove = [];
-        for (var i = 0; i < todos.length; i++) {
+        for (var i = todos.length - 1; i >= 0; i--) {
             if (todos[i].isComplete) {
-                toRemove.push(todos[i].id);
+                todos.splice(i, 1);
             }
-        }
-        for (var j = 0; j < toRemove.length; j++) {
-            deleteTodo(toRemove[j]);
         }
     }
 
