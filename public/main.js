@@ -66,7 +66,7 @@ function completeTodo() {
     }));
     createRequest.onload = function() {
         if (this.status === 200) {
-            console.log("Update success");
+            reloadTodoList();
         } else {
             error.textContent = "Failed to update list item. Server returned " + this.status;
             error.textContent += " - " + this.responseText;
@@ -83,9 +83,15 @@ function reloadTodoList() {
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
             var listItem = document.createElement("li");
+            if (todo.isComplete) {
+                listItem.className = "todo_item_complete";
+            }
+            else {
+                listItem.className = "todo_item_incomplete";
+            }
             listItem.textContent = todo.title;
             var deleteButton = createButton("delete_" + todo.id, "Delete", "Delete_Button");
-            var completeButton = createButton("complete_" + todo.id, "Complete", "Complete_Button");
+            var completeButton = createButton("complete_" + todo.id, "Complete", "Delete_Button");
             deleteButton.onclick = deleteTodo;
             completeButton.onclick = completeTodo;
             listItem.appendChild(deleteButton);

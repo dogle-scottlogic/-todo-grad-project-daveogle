@@ -1,6 +1,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var _ = require("underscore");
+var path = require("path");
+var appDir = path.dirname(require.main.filename);
 
 module.exports = function(port, middleware, callback) {
     var app = express();
