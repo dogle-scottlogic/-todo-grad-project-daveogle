@@ -1,8 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var _ = require("underscore");
-var path = require("path");
-var appDir = path.dirname(require.main.filename);
 
 module.exports = function(port, middleware, callback) {
     var app = express();
@@ -35,14 +33,16 @@ module.exports = function(port, middleware, callback) {
     // Delete
     app.delete("/api/todo/:id", function(req, res) {
         var id = req.params.id;
-        var todo = getTodo(id);
-        if (todo) {
-            todos = todos.filter(function(otherTodo) {
-                return otherTodo !== todo;
-            });
+        if (id === "complete") {
+            deleteComplete();
             res.sendStatus(200);
-        } else {
-            res.sendStatus(404);
+        }
+        else {
+            if (deleteTodo(id)) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(404);
+            }
         }
     });
 
@@ -66,6 +66,25 @@ module.exports = function(port, middleware, callback) {
         return _.find(todos, function(todo) {
             return todo.id === id;
         });
+    }
+
+    function deleteComplete() {
+        for (var i = todos.length - 1; i >= 0; i--) {
+            if (todos[i].isComplete) {
+                todos.splice(i, 1);
+            }
+        }
+    }
+
+    function deleteTodo(id) {
+        var todo = getTodo(id);
+        if (todo) {
+            todos = todos.filter(function(otherTodo) {
+                return otherTodo !== todo;
+            });
+            return true;
+        }
+        return false;
     }
 
     var server = app.listen(port, callback);

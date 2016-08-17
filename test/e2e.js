@@ -266,4 +266,130 @@ testing.describe("end to end", function() {
             });
         });
     });
+
+    // Delete all completed tasks
+    testing.describe("On deleting completed tasks", function() {
+        testing.it("delete completed button should not exist when no tasks are complete", function() {
+            helpers.navigateToSite();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                assert.isFalse(result);
+            });
+            for (var i = 0; i < 10; i++) {
+                helpers.addTodo("New todo " + i);
+            }
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 10);
+            });
+            helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                assert.isFalse(result);
+            });
+        });
+        testing.it("delete completed button should exist when one or more task is complete", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 1");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.completeTodo("complete_0");
+            helpers.pauseTest(500).then(function () {
+                helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                    assert.isTrue(result);
+                });
+            });
+            helpers.addTodo("New todo 2");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 2);
+            });
+            helpers.completeTodo("complete_1");
+            helpers.pauseTest(500).then(function () {
+                helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                    assert.isTrue(result);
+                });
+            });
+        });
+        testing.it("delete completed button should disapear when complete tasks are removed", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 1");
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.completeTodo("complete_0");
+            helpers.pauseTest(500).then(function () {
+                helpers.deleteTodo("delete_0");
+                helpers.getTodoList().then(function(elements) {
+                        assert.equal(elements.length, 0);
+                    });
+                helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                    assert.isFalse(result);
+                });
+            });
+        });
+        testing.it("Tasks should be removed when dc buttons is pressed, leaving incomplete tasks", function() {
+            helpers.navigateToSite();
+            for (var i = 0; i < 10; i++) {
+                helpers.addTodo("New todo " + i);
+            }
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 10);
+            });
+            helpers.completeTodo("complete_0");
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_1");
+            });
+            helpers.pauseTest(500).then(function () {
+                helpers.deleteCompleted();
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 8);
+            });
+        });
+        testing.it("All tasks should be removed when dc buttons is pressed and all tasks complete", function() {
+            helpers.navigateToSite();
+            for (var i = 0; i < 10; i++) {
+                helpers.addTodo("New todo " + i);
+            }
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 10);
+            });
+            helpers.completeTodo("complete_0");
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_1");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_2");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_3");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_4");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_5");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_6");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_7");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_8");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_9");
+            });
+            helpers.pauseTest(500).then(function () {
+                helpers.deleteCompleted();
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.getTodoList().then(function(elements) {
+                    assert.equal(elements.length, 0);
+                });
+            });
+        });
+    });
 });

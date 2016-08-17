@@ -4,6 +4,7 @@ var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
+var clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "Delete_Button");
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -44,18 +45,8 @@ function getTodoList(callback) {
 }
 
 function deleteTodo() {
-    var createRequest = new XMLHttpRequest();
     var path = this.id.replace("delete_", "/api/todo/");
-    createRequest.open("DELETE", path);
-    createRequest.onload = function() {
-        if (this.status === 200) {
-            reloadTodoList();
-        } else {
-            error.textContent = "Failed to delete list item. Server returned " + this.status;
-            error.textContent += " - " + this.responseText;
-        }
-    };
-    createRequest.send();
+    sendDeleteRequest(path);
 }
 
 function completeTodo() {
@@ -75,6 +66,25 @@ function completeTodo() {
             error.textContent += " - " + this.responseText;
         }
     };
+}
+
+function clearComplete() {
+    var path = "/api/todo/complete";
+    sendDeleteRequest(path);
+}
+
+function sendDeleteRequest(path) {
+    var createRequest = new XMLHttpRequest();
+    createRequest.open("DELETE", path);
+    createRequest.onload = function() {
+        if (this.status === 200) {
+            reloadTodoList();
+        } else {
+            error.textContent = "Failed to delete list item. Server returned " + this.status;
+            error.textContent += " - " + this.responseText;
+        }
+    };
+    createRequest.send();
 }
 
 function reloadTodoList() {
@@ -104,6 +114,10 @@ function reloadTodoList() {
             todoList.appendChild(listItem);
         });
         countLabel.textContent = "You have " + leftTodo + " tasks left to do!";
+        if (leftTodo < todos.length) {
+            todoList.appendChild(clearCompleteButton);
+            clearCompleteButton.onclick = clearComplete;
+        }
     });
 }
 

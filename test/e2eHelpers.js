@@ -91,8 +91,16 @@ module.exports.deleteTodo = function(id) {
     driver.findElement(webdriver.By.id(id)).click();
 };
 
+module.exports.deleteCompleted = function() {
+    driver.findElement(webdriver.By.id("clearCompleteButton")).click();
+};
+
 module.exports.completeTodo = function(id) {
     driver.findElement(webdriver.By.id(id)).click();
+};
+
+module.exports.pauseTest = function(n) {
+    return driver.sleep(n);
 };
 
 module.exports.getElementClass = function(element) {
