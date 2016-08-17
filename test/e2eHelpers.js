@@ -99,6 +99,10 @@ module.exports.getElementClass = function(element) {
     return element.getAttribute("class");
 };
 
+module.exports.getCounterMessage = function() {
+    return driver.findElement(webdriver.By.id("count-label")).getText();
+};
+
 module.exports.setupErrorRoute = function(action, route) {
     if (action === "get") {
         router.get(route, function(req, res) {
