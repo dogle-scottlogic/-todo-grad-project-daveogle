@@ -42,7 +42,7 @@ li {
 	font: 30px 'MisoRegular';
 }
 
-.Delete_Button {
+.button {
   display: inline-block;
   margin: 6px 11px;
   margin-top: 6px;
@@ -61,9 +61,9 @@ li {
   box-shadow: 0 9px #999;
 }
 
-.Delete_Button:hover {background-color: #732f51}
+.button:hover {background-color: #732f51}
 
-.Delete_Button:active {
+.button:active {
   background-color: #c32574;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
