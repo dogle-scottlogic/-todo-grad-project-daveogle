@@ -4,7 +4,7 @@ var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
-var clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "Delete_Button");
+var clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "button");
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -105,8 +105,8 @@ function reloadTodoList() {
                 listItem.className = "todo_item_incomplete";
             }
             listItem.textContent = todo.title;
-            var deleteButton = createButton("delete_" + todo.id, "Delete", "Delete_Button");
-            var completeButton = createButton("complete_" + todo.id, "Complete", "Delete_Button");
+            var deleteButton = createButton("delete_" + todo.id, "Delete", "button");
+            var completeButton = createButton("complete_" + todo.id, "Complete", "button");
             deleteButton.onclick = deleteTodo;
             completeButton.onclick = completeTodo;
             listItem.appendChild(deleteButton);
