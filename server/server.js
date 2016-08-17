@@ -35,15 +35,16 @@ module.exports = function(port, middleware, callback) {
         var deleted;
         var id = req.params.id;
         if (id === "complete") {
-            deleted = deleteComplete();
+            deleteComplete();
+            res.sendStatus(200);
         }
         else {
             deleted = deleteTodo(id);
-        }
-        if (deleted) {
-            res.sendStatus(200);
-        } else {
-            res.sendStatus(404);
+            if (deleted) {
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(404);
+            }
         }
     });
 
@@ -77,11 +78,8 @@ module.exports = function(port, middleware, callback) {
             }
         }
         for (var j = 0; j < toRemove.length; j++) {
-            if (!deleteTodo(toRemove[j])) {
-                return false;
-            }
+            deleteTodo(toRemove[j]);
         }
-        return true;
     }
 
     function deleteTodo(id) {
