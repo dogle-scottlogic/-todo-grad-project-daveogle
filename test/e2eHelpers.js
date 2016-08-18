@@ -99,12 +99,32 @@ module.exports.completeTodo = function(id) {
     driver.findElement(webdriver.By.id(id)).click();
 };
 
+module.exports.filterAll = function() {
+    driver.findElement(webdriver.By.id("All")).click();
+};
+
+module.exports.filterActive = function() {
+    driver.findElement(webdriver.By.id("Active")).click();
+};
+
+module.exports.filterComplete = function() {
+    driver.findElement(webdriver.By.id("Complete")).click();
+};
+
 module.exports.pauseTest = function(n) {
     return driver.sleep(n);
 };
 
 module.exports.getElementClass = function(element) {
     return element.getAttribute("class");
+};
+
+module.exports.getElementStyleById = function(id) {
+    return driver.findElement(webdriver.By.id(id)).getAttribute("style");
+};
+
+module.exports.getSelectedFilterButton = function() {
+    return driver.findElement(webdriver.By.className("button_selected")).getText();
 };
 
 module.exports.getCounterMessage = function() {

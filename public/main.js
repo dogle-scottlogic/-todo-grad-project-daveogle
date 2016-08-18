@@ -1,10 +1,16 @@
+var filter = "All";
 var todoList = document.getElementById("todo-list");
 var todoListPlaceholder = document.getElementById("todo-list-placeholder");
 var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
 var countLabel = document.getElementById("count-label");
-var clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "button");
+var filterButtons = document.getElementById("filter_buttons");
+var filterBar = document.getElementById("filter_bar");
+var clearCompleteButton;
+var filterAllButton;
+var filterActiveButton;
+var filterCompleteButton;
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -14,6 +20,31 @@ form.onsubmit = function(event) {
     todoTitle.value = "";
     event.preventDefault();
 };
+
+function createButtons() {
+    clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "button");
+    filterAllButton = createButton("All", "All", "button_selected");
+    filterActiveButton = createButton("Active", "Active", "button");
+    filterCompleteButton = createButton("Complete", "Complete", "button");
+
+    filterButtons.appendChild(filterAllButton);
+    filterButtons.appendChild(filterActiveButton);
+    filterButtons.appendChild(filterCompleteButton);
+
+    clearCompleteButton.onclick = clearComplete;
+    filterActiveButton.onclick = filterList;
+    filterCompleteButton.onclick = filterList;
+    filterAllButton.onclick = filterList;
+}
+
+function filterList() {
+    filter = this.id;
+    filterAllButton.className = "button";
+    filterActiveButton.className = "button";
+    filterCompleteButton.className = "button";
+    this.className = "button_selected";
+    reloadTodoList();
+}
 
 function createTodo(title, callback) {
     var createRequest = new XMLHttpRequest();
@@ -87,36 +118,53 @@ function sendDeleteRequest(path) {
     createRequest.send();
 }
 
+function createListItem(todo) {
+    if (filter === "All" || todo.isComplete && filter === "Complete" || !todo.isComplete && filter === "Active") {
+        var listItem = document.createElement("li");
+        listItem.textContent = todo.title;
+        var deleteButton = createButton("delete_" + todo.id, "Delete", "button");
+        var completeButton = createButton("complete_" + todo.id, "Complete", "button");
+        deleteButton.onclick = deleteTodo;
+        completeButton.onclick = completeTodo;
+        listItem.appendChild(deleteButton);
+        listItem.appendChild(completeButton);
+        return listItem;
+    }
+    return null;
+}
+
 function reloadTodoList() {
+
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
     }
     todoListPlaceholder.style.display = "block";
     getTodoList(function(todos) {
         var leftTodo = parseInt(todos.length);
+        if (leftTodo > 0) {
+            filterBar.style.display = "";
+        } else {
+            filterBar.style.display = "none";
+        }
         todoListPlaceholder.style.display = "none";
+
         todos.forEach(function(todo) {
-            var listItem = document.createElement("li");
-            if (todo.isComplete) {
-                listItem.className = "todo_item_complete";
-                leftTodo --;
+            var listItem = createListItem(todo);
+            if (listItem !== null) {
+                if (todo.isComplete) {
+                    listItem.className = "todo_item_complete";
+                    leftTodo --;
+                }
+                else {
+                    listItem.className = "todo_item_incomplete";
+                }
+                todoList.appendChild(listItem);
             }
-            else {
-                listItem.className = "todo_item_incomplete";
-            }
-            listItem.textContent = todo.title;
-            var deleteButton = createButton("delete_" + todo.id, "Delete", "button");
-            var completeButton = createButton("complete_" + todo.id, "Complete", "button");
-            deleteButton.onclick = deleteTodo;
-            completeButton.onclick = completeTodo;
-            listItem.appendChild(deleteButton);
-            listItem.appendChild(completeButton);
-            todoList.appendChild(listItem);
         });
+
         countLabel.textContent = "You have " + leftTodo + " tasks left to do!";
         if (leftTodo < todos.length) {
             todoList.appendChild(clearCompleteButton);
-            clearCompleteButton.onclick = clearComplete;
         }
     });
 }
@@ -129,4 +177,5 @@ function createButton(id, text, className) {
     return button;
 }
 
+createButtons();
 reloadTodoList();
