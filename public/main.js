@@ -23,7 +23,7 @@ form.onsubmit = function(event) {
 
 function createButtons() {
     clearCompleteButton = createButton("clearCompleteButton", "Clear Complete", "button");
-    filterAllButton = createButton("All", "All", "button");
+    filterAllButton = createButton("All", "All", "button_selected");
     filterActiveButton = createButton("Active", "Active", "button");
     filterCompleteButton = createButton("Complete", "Complete", "button");
 

@@ -396,24 +396,199 @@ testing.describe("end to end", function() {
     // Filter buttons
     testing.describe("On selecting a filter", function() {
         testing.it("no filter option should be visable with no todo items", function() {
+            helpers.navigateToSite();
+            helpers.getElementStyleById("filter_bar").then(function(style) {
+                assert.equal(style, "display: none;");
+            });
         });
         testing.it("all filter options should be visable with one or more todo item", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo");
+            helpers.getElementStyleById("filter_bar").then(function(style) {
+                assert.equal(style, "");
+            });
         });
         testing.it("'All' filter option should be selected by default", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo");
+            helpers.getSelectedFilterButton().then(function(selected) {
+                assert.equal(selected, "All");
+            });
         });
         testing.it("'All' filter option should show complete and active todos", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.addTodo("New todo 1");
+            helpers.addTodo("New todo 2");
+            helpers.addTodo("New todo 3");
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_0");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_1");
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 4);
+            });
+            helpers.filterAll();
+            helpers.pauseTest(500).then(function() {
+                helpers.getTodoList().then(function(elements) {
+                    assert.equal(elements.length, 4);
+                });
+            });
         });
-        testing.it("'Active' filter option should remove all Complete todos and clear complete button", function() {
+        testing.it("'Active' filter should be selected when pressed and All should be deselected", function () {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.getSelectedFilterButton().then(function(selected) {
+                assert.equal(selected, "All");
+            });
+            helpers.filterActive();
+            helpers.getSelectedFilterButton().then(function(selected) {
+                assert.equal(selected, "Active");
+            });
         });
-        testing.it("'Active' filter option should remove all Complete todos and clear complete button", function() {
+        testing.it("'Active' option with some Complete removes all Complete and clear complete button", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.addTodo("New todo 1");
+            helpers.addTodo("New todo 2");
+            helpers.addTodo("New todo 3");
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_0");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_1");
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 4);
+            });
+            helpers.filterActive();
+            helpers.pauseTest(500).then(function() {
+                helpers.getTodoList().then(function(elements) {
+                    assert.equal(elements.length, 2); // Assert that two items were removed
+                    helpers.getElementClass(elements[0]).then(function(className) {
+                        // Assert that the remaining todos are incomplete
+                        assert.equal(className, "todo_item_incomplete");
+                    });
+                });
+                helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                    assert.isFalse(result); // Assert that the clear complete button has been removed
+                });
+            });
         });
-        testing.it("'Active' filter option should remove all todos if all are complete", function() {
+        testing.it("'Active' filter option with all complete removes all todos and clear complete button", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.addTodo("New todo 1");
+            helpers.addTodo("New todo 2");
+            helpers.addTodo("New todo 3");
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_0");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_1");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_2");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_3");
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 4);
+            });
+            helpers.filterActive();
+            helpers.pauseTest(500).then(function() {
+                helpers.getTodoList().then(function(elements) {
+                    assert.equal(elements.length, 0); // Assert that two items were removed
+                });
+                helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                    assert.isFalse(result); // Assert that the clear complete button has been removed
+                });
+            });
+        });
+        testing.it("'Complete' filter should be selected when pressed and All should be deselected", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.getSelectedFilterButton().then(function(selected) {
+                assert.equal(selected, "All");
+            });
+            helpers.filterComplete();
+            helpers.getSelectedFilterButton().then(function(selected) {
+                assert.equal(selected, "Complete");
+            });
         });
         testing.it("'Complete' filter option should remove all Active todos and not clear complete button", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.addTodo("New todo 1");
+            helpers.addTodo("New todo 2");
+            helpers.addTodo("New todo 3");
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_0");
+            });
+            helpers.pauseTest(500).then(function() {
+                helpers.completeTodo("complete_1");
+            });
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 4);
+            });
+            helpers.filterComplete();
+            helpers.pauseTest(500).then(function() {
+                helpers.getTodoList().then(function(elements) {
+                    assert.equal(elements.length, 2); // Assert that two items were removed
+                    helpers.getElementClass(elements[0]).then(function(className) {
+                        // Assert that the remaining todos are complete
+                        assert.equal(className, "todo_item_complete");
+                    });
+                });
+                helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                    assert.isTrue(result); // Assert that the clear complete button has been removed
+                });
+            });
         });
-        testing.it("'Complete' filter option should remove all todos if all are complete", function() {
+        testing.it("'Complete' filter option should remove all todos if all are active", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.addTodo("New todo 1");
+            helpers.addTodo("New todo 2");
+            helpers.addTodo("New todo 3");
+            helpers.pauseTest(500).then(function() {
+                helpers.filterComplete();
+                helpers.pauseTest(500).then(function() {
+                    helpers.getTodoList().then(function(elements) {
+                        assert.equal(elements.length, 0); // Assert that two items were removed
+                    });
+                    helpers.elementExistsById("clearCompleteButton").then(function(result) {
+                        assert.isFalse(result); // Assert that the clear complete button has been removed
+                    });
+                });
+            });
         });
         testing.it("Pressing a filter twice should change nothing the second time", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo 0");
+            helpers.filterAll();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.filterActive();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.filterActive();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 1);
+            });
+            helpers.filterComplete();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+            helpers.filterComplete();
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
         });
     });
 });
