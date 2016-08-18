@@ -119,8 +119,7 @@ function sendDeleteRequest(path) {
 }
 
 function createListItem(todo) {
-    if(filter === "All" || todo.isComplete && filter === "Complete" || !todo.isComplete && filter === "Active")
-    {
+    if (filter === "All" || todo.isComplete && filter === "Complete" || !todo.isComplete && filter === "Active") {
         var listItem = document.createElement("li");
         listItem.textContent = todo.title;
         var deleteButton = createButton("delete_" + todo.id, "Delete", "button");
@@ -142,7 +141,7 @@ function reloadTodoList() {
     todoListPlaceholder.style.display = "block";
     getTodoList(function(todos) {
         var leftTodo = parseInt(todos.length);
-        if(leftTodo > 0) {
+        if (leftTodo > 0) {
             filterBar.style.display = "";
         } else {
             filterBar.style.display = "none";
@@ -151,7 +150,7 @@ function reloadTodoList() {
 
         todos.forEach(function(todo) {
             var listItem = createListItem(todo);
-            if(listItem != null) {
+            if (listItem !== null) {
                 if (todo.isComplete) {
                     listItem.className = "todo_item_complete";
                     leftTodo --;

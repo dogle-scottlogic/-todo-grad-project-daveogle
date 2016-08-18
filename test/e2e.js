@@ -392,4 +392,28 @@ testing.describe("end to end", function() {
             });
         });
     });
+
+    // Filter buttons
+    testing.describe("On selecting a filter", function() {
+        testing.it("no filter option should be visable with no todo items", function() {
+        });
+        testing.it("all filter options should be visable with one or more todo item", function() {
+        });
+        testing.it("'All' filter option should be selected by default", function() {
+        });
+        testing.it("'All' filter option should show complete and active todos", function() {
+        });
+        testing.it("'Active' filter option should remove all Complete todos and clear complete button", function() {
+        });
+        testing.it("'Active' filter option should remove all Complete todos and clear complete button", function() {
+        });
+        testing.it("'Active' filter option should remove all todos if all are complete", function() {
+        });
+        testing.it("'Complete' filter option should remove all Active todos and not clear complete button", function() {
+        });
+        testing.it("'Complete' filter option should remove all todos if all are complete", function() {
+        });
+        testing.it("Pressing a filter twice should change nothing the second time", function() {
+        });
+    });
 });
