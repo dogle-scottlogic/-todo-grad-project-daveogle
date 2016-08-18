@@ -11,6 +11,7 @@ var clearCompleteButton;
 var filterAllButton;
 var filterActiveButton;
 var filterCompleteButton;
+var changeId = 0;
 
 form.onsubmit = function(event) {
     var title = todoTitle.value;
@@ -62,6 +63,7 @@ function createTodo(title, callback) {
               response.status + " - " + response.statusText;
               return;
           }
+          changeId++;
           callback();
       }).catch(function (error) {
           console.log("Request failed", error);
@@ -108,6 +110,7 @@ function completeTodo() {
               response.status + " - " + response.statusText;
               return;
           }
+          changeId++;
           reloadTodoList();
       }).catch(function (error) {
           console.log("Request failed", error);
@@ -129,6 +132,7 @@ function sendDeleteRequest(path) {
                   response.status + " - " + response.statusText;
                   return;
               }
+              changeId++;
               reloadTodoList();
           }).catch(function (error) {
               console.log("Request failed", error);
@@ -151,7 +155,6 @@ function createListItem(todo) {
 }
 
 function reloadTodoList() {
-
     while (todoList.firstChild) {
         todoList.removeChild(todoList.firstChild);
     }
@@ -194,5 +197,20 @@ function createButton(id, text, className) {
     return button;
 }
 
+function getLatestChangeId() {
+    fetch("/api/changed").then(
+        function(response) {
+            response.json().then(function(data) {
+                if (parseInt(data) !== changeId && changeId !== 0) {
+                    reloadTodoList();
+                }
+                changeId = parseInt(data);
+            });
+        }).catch(function(err) {
+        console.log("Fetch error - " + err);
+    });
+}
+
 createButtons();
 reloadTodoList();
+var id = setInterval(getLatestChangeId, 10000);

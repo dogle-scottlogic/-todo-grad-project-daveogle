@@ -5,6 +5,7 @@ var assert = require("chai").assert;
 var testPort = 52684;
 var baseUrl = "http://localhost:" + testPort;
 var todoListUrl = baseUrl + "/api/todo";
+var changeIdUrl = baseUrl + "/api/changed";
 
 describe("server", function() {
     var serverInstance;
@@ -36,7 +37,14 @@ describe("server", function() {
             });
         });
     });
-
+    describe("get the current update", function() {
+        it("responds with the current update number held on the server", function(done) {
+            request(changeIdUrl, function(error, response, body) {
+                assert.equal(body, 0);
+                done();
+            });
+        });
+    });
     // Post
     describe("create a new todo", function() {
         it("responds with status code 201", function(done) {
