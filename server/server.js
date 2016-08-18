@@ -12,6 +12,7 @@ module.exports = function(port, middleware, callback) {
     app.use(express.static("public"));
     app.use(bodyParser.json());
 
+    var changeId = 0;
     var latestId = 0;
     var todos = [];
 
@@ -24,11 +25,16 @@ module.exports = function(port, middleware, callback) {
         todos.push(todo);
         res.set("Location", "/api/todo/" + todo.id);
         res.sendStatus(201);
+        changeId++;
     });
 
     // Read
     app.get("/api/todo", function(req, res) {
         res.json(todos);
+    });
+
+    app.get("/api/changed", function(req, res) {
+        res.json(changeId);
     });
 
     // Delete
@@ -37,10 +43,12 @@ module.exports = function(port, middleware, callback) {
         if (id === "complete") {
             deleteComplete();
             res.sendStatus(200);
+            changeId++;
         }
         else {
             if (deleteTodo(id)) {
                 res.sendStatus(200);
+                changeId++;
             } else {
                 res.sendStatus(404);
             }
@@ -58,6 +66,7 @@ module.exports = function(port, middleware, callback) {
             }
             res.set("Location", "/api/todo/" + todo.id);
             res.sendStatus(200);
+            changeId++;
         } else {
             res.sendStatus(404);
         }
