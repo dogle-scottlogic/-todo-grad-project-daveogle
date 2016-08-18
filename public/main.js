@@ -63,16 +63,19 @@ function createTodo(title, callback) {
 }
 
 function getTodoList(callback) {
-    var createRequest = new XMLHttpRequest();
-    createRequest.open("GET", "/api/todo");
-    createRequest.onload = function() {
-        if (this.status === 200) {
-            callback(JSON.parse(this.responseText));
-        } else {
-            error.textContent = "Failed to get list. Server returned " + this.status + " - " + this.responseText;
-        }
-    };
-    createRequest.send();
+    fetch("/api/todo").then(
+        function(response) {
+            if (response.status !== 200) {
+                error.textContent = "Failed to get list. Server returned " +
+                response.status + " - " + response.statusText;
+                return;
+            }
+            response.json().then(function(data) {
+                callback(data);
+            });
+        }).catch(function(err) {
+        console.log("Fetch error - " + err);
+    });
 }
 
 function deleteTodo() {
