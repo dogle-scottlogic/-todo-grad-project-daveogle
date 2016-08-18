@@ -32,6 +32,16 @@ li {
     padding: 2.5px;
 }
 
+#filter_bar {
+    display: flex;
+
+}
+
+#filter_buttons button {
+    width:110px;
+    margin: 16px;
+}
+
 .todo_item_complete {
 	color: #000;
 	text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #00ff13, 0 0 30px #00ff13, 0 0 40px #00ff13, 0 0 50px #00ff13, 0 0 75px #00ff13;
@@ -81,6 +91,27 @@ li {
   background-color: #c32574;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
+}
+
+.button_selected {
+    display: inline-block;
+    margin: 6px 11px;
+    margin-top: 6px;
+    margin-right: 1px;
+    margin-bottom: 6px;
+    margin-left: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    background-color: #c32574;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
 }
 
 #count-label {
