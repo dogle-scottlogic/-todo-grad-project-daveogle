@@ -11,6 +11,7 @@ module.exports = function(port, middleware, callback) {
     }
     app.use(express.static("public"));
     app.use(bodyParser.json());
+    app.use(require("connect-livereload")());
 
     var changeId = 0;
     var latestId = 0;
