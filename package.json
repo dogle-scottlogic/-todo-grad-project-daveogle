@@ -7,7 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "grunt ci-test"
+    "test": "grunt ci-test",
+    "start": "tsc && concurrently \"npm run tsc:w\" \"node server.js\" ",
+    "postinstall": "typings install",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings"
   },
   "repository": {
     "type": "git",
@@ -54,6 +59,9 @@
     "body-parser": "^1.12.4",
     "express": "^4.12.4",
     "underscore": "^1.8.3",
-    "whatwg-fetch": "^1.0.0"
-}
+    "whatwg-fetch": "^1.0.0",
+    "typescript": "^1.8.10",
+    "typings":"^1.0.4",
+    "concurrently": "^2.0.0"
+    }
 }

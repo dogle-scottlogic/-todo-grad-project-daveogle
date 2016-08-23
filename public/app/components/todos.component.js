@@ -9,36 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var app_todo_service_1 = require("./app.todo.service");
+var todos_service_1 = require("../services/todos.service");
 var Todo = (function () {
     function Todo() {
     }
     return Todo;
 }());
 exports.Todo = Todo;
-var AppComponent = (function () {
-    function AppComponent(todoService) {
+var TodosComponent = (function () {
+    function TodosComponent(todoService) {
         this.todoService = todoService;
     }
-    AppComponent.prototype.getHeros = function () {
+    TodosComponent.prototype.getTodos = function () {
         var _this = this;
-        this.todoService.getTodos().then(function (todos) { return _this.todos = todos; });
+        this.todoService
+            .getTodos()
+            .then(function (result) { return _this.todos = result; });
     };
-    AppComponent.prototype.onSelect = function (todo) {
+    TodosComponent.prototype.onSelect = function (todo) {
         this.selectedTodo = todo;
     };
-    AppComponent.prototype.ngOnInit = function () {
-        this.getHeros();
+    TodosComponent.prototype.ngOnInit = function () {
+        this.getTodos();
     };
-    AppComponent = __decorate([
+    TodosComponent = __decorate([
         core_1.Component({
-            selector: "my-app",
-            templateUrl: "/app/templates/todoList.html",
-            providers: [app_todo_service_1.TodoService]
-        }),
-        __metadata('design:paramtypes', [app_todo_service_1.TodoService])
-    ], AppComponent);
-    return AppComponent;
+            selector: "my-todos",
+            templateUrl: "/app/templates/todoList.html"
+        }), 
+        __metadata('design:paramtypes', [todos_service_1.TodoService])
+    ], TodosComponent);
+    return TodosComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.TodosComponent = TodosComponent;
+//# sourceMappingURL=todos.component.js.map

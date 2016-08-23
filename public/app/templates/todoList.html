@@ -1,0 +1,28 @@
+<header>
+    <h1>TODO List</h1>
+</header>
+<div id="count-label">
+
+</div>
+<section>
+    <h2 id="todo-list-placeholder">Loading...</h2>
+        <ul id="todo-list">
+            <li *ngFor="let todo of todos" [class.todo_item_complete] = "todo.isComplete" [class.todo_item_incomplete] = "!todo.isComplete">
+                {{todo.title}}
+            </li>
+        </ul>
+        <div *ngIf="selectedHero">
+            <h2>{{selecetedTodo.title}} details!</h2>
+            <div><label>id: </label>{{selectedTodo.id}}</div>
+        </div>
+    <form id="todo-form">
+        <input id="new-todo" placeholder="What needs to be done?" autofocus>
+        <input id="submit-todo" class="button" type="submit" value="Create">
+    </form>
+    <div id="filter_bar">
+        <h3>Filter buttons:</h3>
+        <div id="filter_buttons">
+        </div>
+    </div>
+    <div class="error" *ngIf="error">{{error}}</div>
+</section>

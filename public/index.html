@@ -1,33 +1,27 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <title>Todo Grad Project</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="main.css">
-
+    <link rel="icon" type="image/ico" href="favicon.ico">
     <!-- 1. Load libraries -->
     <!-- IE required polyfill -->
-    <script src="/lib/core-js/client/shim.min.js"></script>
-
-    <script src="/lib/zone.js/dist/zone.js"></script>
-    <script src="/lib/reflect-metadata/Reflect.js"></script>
-
-    <script src="/lib/rxjs/bundles/Rx.umd.js"></script>
-    <script src="/lib/@angular/core/bundles/core.umd.js"></script>
-    <script src="/lib/@angular/common/bundles/common.umd.js"></script>
-    <script src="/lib/@angular/compiler/bundles/compiler.umd.js"></script>
-    <script src="/lib/@angular/platform-browser/bundles/platform-browser.umd.js"></script>
-    <script src="/lib/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js"></script>
-
-    <!-- 2. Load our 'modules' -->
-    <script src='app/app.component.js'></script>
-    <script src='app/app.module.js'></script>
-    <script src='app/main.js'></script>
-
-  </head>
+    <!-- 1. Load libraries -->
+   <!-- Polyfill(s) for older browsers -->
+  <script src="lib/core-js/client/shim.min.js"></script>
+  <script src="lib/zone.js/dist/zone.js"></script>
+  <script src="lib/reflect-metadata/Reflect.js"></script>
+  <script src="lib/systemjs/dist/system.src.js"></script>
+  <!-- 2. Configure SystemJS -->
+  <script src="lib/systemjs.config.js"></script>
+  <script>
+    System.import('app').catch(function(err){ console.error(err); });
+  </script>
 
   <!-- 3. Display the application -->
   <body>
-    <todo-grad-project>Loading...</todo-grad-project>
+    <my-app>Loading...</my-app>
   </body>
 
 </html>

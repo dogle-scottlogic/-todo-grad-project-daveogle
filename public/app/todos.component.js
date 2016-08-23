@@ -16,29 +16,29 @@ var Todo = (function () {
     return Todo;
 }());
 exports.Todo = Todo;
-var AppComponent = (function () {
-    function AppComponent(todoService) {
+var TodosComponent = (function () {
+    function TodosComponent(todoService) {
         this.todoService = todoService;
     }
-    AppComponent.prototype.getHeros = function () {
+    TodosComponent.prototype.getHeros = function () {
         var _this = this;
         this.todoService.getTodos().then(function (todos) { return _this.todos = todos; });
     };
-    AppComponent.prototype.onSelect = function (todo) {
+    TodosComponent.prototype.onSelect = function (todo) {
         this.selectedTodo = todo;
     };
-    AppComponent.prototype.ngOnInit = function () {
+    TodosComponent.prototype.ngOnInit = function () {
         this.getHeros();
     };
-    AppComponent = __decorate([
+    TodosComponent = __decorate([
         core_1.Component({
-            selector: "my-app",
+            selector: "my-todos",
             templateUrl: "/app/templates/todoList.html",
             providers: [app_todo_service_1.TodoService]
-        }),
+        }), 
         __metadata('design:paramtypes', [app_todo_service_1.TodoService])
-    ], AppComponent);
-    return AppComponent;
+    ], TodosComponent);
+    return TodosComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.TodosComponent = TodosComponent;
+//# sourceMappingURL=todos.component.js.map

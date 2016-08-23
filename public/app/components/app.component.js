@@ -8,35 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var app_todo_service_1 = require("./app.todo.service");
-var Todo = (function () {
-    function Todo() {
-    }
-    return Todo;
-}());
-exports.Todo = Todo;
+var core_1 = require('@angular/core');
 var AppComponent = (function () {
-    function AppComponent(todoService) {
-        this.todoService = todoService;
+    function AppComponent() {
+        this.title = 'Todo Application';
     }
-    AppComponent.prototype.getHeros = function () {
-        var _this = this;
-        this.todoService.getTodos().then(function (todos) { return _this.todos = todos; });
-    };
-    AppComponent.prototype.onSelect = function (todo) {
-        this.selectedTodo = todo;
-    };
-    AppComponent.prototype.ngOnInit = function () {
-        this.getHeros();
-    };
     AppComponent = __decorate([
         core_1.Component({
-            selector: "my-app",
-            templateUrl: "/app/templates/todoList.html",
-            providers: [app_todo_service_1.TodoService]
-        }),
-        __metadata('design:paramtypes', [app_todo_service_1.TodoService])
+            selector: 'my-app',
+            template: "\n    <h1>{{title}}</h1>\n    <my-todos></my-todos>\n  "
+        }), 
+        __metadata('design:paramtypes', [])
     ], AppComponent);
     return AppComponent;
 }());

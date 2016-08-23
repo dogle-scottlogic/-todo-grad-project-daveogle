@@ -10,8 +10,8 @@ module.exports = function(port, middleware, callback) {
     if (middleware) {
         app.use(middleware);
     }
-    app.use('/', express.static(__dirname + '/../public'));
-    app.use('/lib', express.static(__dirname + '/../node_modules'));
+    app.use("/", express.static(__dirname + "/../public"));
+    app.use("/lib", express.static(__dirname + "/../node_modules"));
     app.use(bodyParser.json());
 
     var changeId = 0;
