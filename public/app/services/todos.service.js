@@ -16,10 +16,21 @@ var TodoService = (function () {
         this.http = http;
         this.todosUrl = "api/todo/";
     }
+    // Get
     TodoService.prototype.getTodos = function () {
         return this.http.get(this.todosUrl)
             .toPromise()
             .then(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
+    // Post
+    TodoService.prototype.setTodo = function (todo) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        console.log(todo);
+        return this.http
+            .post(this.todosUrl, JSON.stringify(todo), { headers: headers })
+            .toPromise()
+            .then(function (res) { return res; })
             .catch(this.handleError);
     };
     TodoService.prototype.handleError = function (error) {

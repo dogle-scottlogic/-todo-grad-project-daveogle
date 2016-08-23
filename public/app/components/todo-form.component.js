@@ -9,18 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Todo Application';
+var HeroFormComponent = (function () {
+    function HeroFormComponent() {
+        this.powers = ['Really Smart', 'Super Flexible',
+            'Super Hot', 'Weather Changer'];
+        this.model = new Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
+        this.submitted = false;
     }
-    AppComponent = __decorate([
+    HeroFormComponent.prototype.onSubmit = function () { this.submitted = true; };
+    Object.defineProperty(HeroFormComponent.prototype, "diagnostic", {
+        // TODO: Remove this when we're done
+        get: function () { return JSON.stringify(this.model); },
+        enumerable: true,
+        configurable: true
+    });
+    HeroFormComponent = __decorate([
         core_1.Component({
-            selector: 'my-app',
-            template: "<my-todos></my-todos>"
+            selector: 'hero-form',
+            templateUrl: 'app/hero-form.component.html'
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], HeroFormComponent);
+    return HeroFormComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.HeroFormComponent = HeroFormComponent;
+//# sourceMappingURL=todo-form.component.js.map

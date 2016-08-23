@@ -2,9 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { TodoService } from "../services/todos.service";
 
 export class Todo {
-  title: string;
-  id: number;
-  isComplete: boolean;
+    id: number;
+    isComplete: boolean;
+    constructor(
+        title: string
+    ) {}
 }
 
 @Component({
@@ -16,6 +18,9 @@ export class TodosComponent implements OnInit {
     todos: Todo[];
     selectedTodo: Todo;
     error: any;
+    model = new Todo("");
+    submitted = false;
+    active = true;
 
     constructor(private todoService: TodoService) { }
 
@@ -25,8 +30,25 @@ export class TodosComponent implements OnInit {
             .then( result => this.todos = result);
     }
 
+    addTodo(todo: Todo): void {
+        this.todoService.setTodo(todo)
+        .then( result => result._body === "Created" ? this.todos.push(todo) : console.log("Error"));
+    }
+
     onSelect(todo: Todo): void {
         this.selectedTodo = todo;
+    }
+
+    onSubmit() {
+        this.submitted = true;
+        this.addTodo(this.model);
+        this.newTodo();
+    }
+
+    newTodo(){
+          this.model = new Todo("");
+          this.active = false;
+          setTimeout(() => this.active = true, 0);
     }
 
     ngOnInit(): void {

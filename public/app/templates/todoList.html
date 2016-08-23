@@ -15,14 +15,19 @@
             <h2>{{selecetedTodo.title}} details!</h2>
             <div><label>id: </label>{{selectedTodo.id}}</div>
         </div>
-    <form id="todo-form">
-        <input id="new-todo" placeholder="What needs to be done?" autofocus>
-        <input id="submit-todo" class="button" type="submit" value="Create">
-    </form>
-    <div id="filter_bar">
-        <h3>Filter buttons:</h3>
-        <div id="filter_buttons">
+        <div class="container">
+            <h3>Add A New Task</h3>
+            <form *ngIf="active" (ngSubmit)="onSubmit()" #todoForm="ngForm">
+                <input type="text" id="title" placeholder="What needs to be done?" autofocus
+                required
+                [(ngModel)]="model.title" name="title"/>
+                <button type="submit" class="button" [disabled]="!todoForm.form.valid">New Task</button>
+            </form>
         </div>
-    </div>
-    <div class="error" *ngIf="error">{{error}}</div>
+        <div id="filter_bar">
+            <h3>Filter buttons:</h3>
+            <div id="filter_buttons">
+            </div>
+        </div>
+        <div class="error" *ngIf="error">{{error}}</div>
 </section>

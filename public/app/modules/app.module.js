@@ -25,7 +25,10 @@ var AppModule = (function () {
                 forms_1.FormsModule,
                 http_1.HttpModule
             ],
-            declarations: [app_component_1.AppComponent, todos_component_1.TodosComponent],
+            declarations: [
+                app_component_1.AppComponent,
+                todos_component_1.TodosComponent
+            ],
             providers: [todos_service_1.TodoService],
             bootstrap: [app_component_1.AppComponent]
         }), 

@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var todos_service_1 = require("../services/todos.service");
 var Todo = (function () {
-    function Todo() {
+    function Todo(title) {
     }
     return Todo;
 }());
@@ -19,6 +19,9 @@ exports.Todo = Todo;
 var TodosComponent = (function () {
     function TodosComponent(todoService) {
         this.todoService = todoService;
+        this.model = new Todo("");
+        this.submitted = false;
+        this.active = true;
     }
     TodosComponent.prototype.getTodos = function () {
         var _this = this;
@@ -26,8 +29,24 @@ var TodosComponent = (function () {
             .getTodos()
             .then(function (result) { return _this.todos = result; });
     };
+    TodosComponent.prototype.addTodo = function (todo) {
+        var _this = this;
+        this.todoService.setTodo(todo)
+            .then(function (result) { return result._body === "Created" ? _this.todos.push(todo) : console.log("Error"); });
+    };
     TodosComponent.prototype.onSelect = function (todo) {
         this.selectedTodo = todo;
+    };
+    TodosComponent.prototype.onSubmit = function () {
+        this.submitted = true;
+        this.addTodo(this.model);
+        this.newTodo();
+    };
+    TodosComponent.prototype.newTodo = function () {
+        var _this = this;
+        this.model = new Todo("");
+        this.active = false;
+        setTimeout(function () { return _this.active = true; }, 0);
     };
     TodosComponent.prototype.ngOnInit = function () {
         this.getTodos();

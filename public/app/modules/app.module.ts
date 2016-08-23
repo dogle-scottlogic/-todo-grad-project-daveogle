@@ -14,7 +14,10 @@ import { TodoService }  from "../services/todos.service";
         FormsModule,
         HttpModule
     ],
-    declarations: [ AppComponent, TodosComponent ],
+    declarations: [
+        AppComponent,
+        TodosComponent
+    ],
     providers: [TodoService],
     bootstrap: [ AppComponent ]
 })
