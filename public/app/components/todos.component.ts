@@ -4,9 +4,18 @@ import { TodoService } from "../services/todos.service";
 export class Todo {
     id: number;
     isComplete: boolean;
+    title: string;
     constructor(
         title: string
-    ) {}
+    ) { this.title = title; }
+}
+
+export class Error {
+    isError: boolean;
+    errorMessage: string;
+    errorCode: number;
+    errorText: string;
+    constructor() { this.isError = false; }
 }
 
 @Component({
@@ -17,7 +26,7 @@ export class Todo {
 export class TodosComponent implements OnInit {
     todos: Todo[];
     selectedTodo: Todo;
-    error: any;
+    error: Error = new Error();
     model = new Todo("");
     submitted = false;
     active = true;
@@ -28,12 +37,16 @@ export class TodosComponent implements OnInit {
     getTodos(): void {
         this.todoService
             .getTodos()
-            .then( result => this.todos = result);
+            .then( result => result.status === 200 ? this.todos = result.json() :
+            this.createError("Failed to get list. Server returned ", result.status, result.statusText))
+            .catch( result => this.createError("Failed to get list. Server returned ", result.status, result.statusText));
     }
 
     addTodo(todo: Todo): void {
         this.todoService.setTodo(todo)
-        .then( result => result.status === 201 ? this.pushTodo(todo, result.headers.get("Id")) : console.log("Error"));
+        .then( result => result.status === 201 ? this.pushTodo(todo, result.headers.get("Id")) :
+        this.createError("Failed to create item. Server returned ", result.status, result.statusText))
+        .catch( result => this.createError("Failed to create item. Server returned ", result.status, result.statusText));
     }
 
     private pushTodo(todo: Todo, id: number): void{
@@ -43,7 +56,9 @@ export class TodosComponent implements OnInit {
 
     deleteTodo(id: number): void {
         this.todoService.removeTodo(id)
-        .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id != id) : console.log("Error"));
+        .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id != id) :
+        this.createError("Failed to delete item. Server returned ", result.status, result.statusText))
+        .catch( result => this.createError("Failed to delete item. Server returned ", result.status, result.statusText));
     }
 
     completeTodo(id: number): void {
@@ -51,7 +66,9 @@ export class TodosComponent implements OnInit {
         let updateTodo = this.todos[elementPos];
         updateTodo.isComplete = true;
         this.todoService.updateTodo(updateTodo)
-        .then( result => result.status === 200 ? this.todos[elementPos].isComplete = true : console.log("Error"));
+        .then( result => result.status === 200 ? this.todos[elementPos].isComplete = true :
+        this.createError("Failed to update item. Server returned ", result.status, result.statusText))
+        .catch( result => this.createError("Failed to update item. Server returned ", result.status, result.statusText));
     }
 
     onSelect(todo: Todo): void {
@@ -68,6 +85,13 @@ export class TodosComponent implements OnInit {
           this.model = new Todo("");
           this.active = false;
           setTimeout(() => this.active = true, 0);
+    }
+
+    createError(message: string, code: number, text: string) {
+        this.error.errorMessage = message;
+        this.error.errorCode = code;
+        this.error.errorText = text;
+        this.error.isError = true;
     }
 
     ngOnInit(): void {

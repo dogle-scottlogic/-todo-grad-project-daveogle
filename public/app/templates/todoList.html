@@ -27,5 +27,5 @@
             <div id="filter_buttons">
             </div>
         </div>
-        <div class="error" *ngIf="error">{{error}}</div>
+        <div id="error" class="error" *ngIf="error.isError">{{error.errorMessage}}{{error.errorCode}} - {{error.errorText}}</div>
 </section>

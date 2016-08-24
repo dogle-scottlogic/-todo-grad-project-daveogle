@@ -20,7 +20,6 @@ var TodoService = (function () {
     TodoService.prototype.getTodos = function () {
         return this.http.get(this.todosUrl)
             .toPromise()
-            .then(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     // Post
