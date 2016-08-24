@@ -32,7 +32,16 @@ var TodosComponent = (function () {
     TodosComponent.prototype.addTodo = function (todo) {
         var _this = this;
         this.todoService.setTodo(todo)
-            .then(function (result) { return result._body === "Created" ? _this.todos.push(todo) : console.log("Error"); });
+            .then(function (result) { return result.status === 201 ? _this.pushTodo(todo, result.headers.get("Id")) : console.log("Error"); });
+    };
+    TodosComponent.prototype.pushTodo = function (todo, id) {
+        todo.id = id;
+        this.todos.push(todo);
+    };
+    TodosComponent.prototype.deleteTodo = function (id) {
+        var _this = this;
+        this.todoService.removeTodo(id)
+            .then(function (result) { return result.status === 200 ? _this.todos = _this.todos.filter(function (todo) { return todo.id != id; }) : console.log("Error"); });
     };
     TodosComponent.prototype.onSelect = function (todo) {
         this.selectedTodo = todo;

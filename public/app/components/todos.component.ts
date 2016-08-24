@@ -32,7 +32,17 @@ export class TodosComponent implements OnInit {
 
     addTodo(todo: Todo): void {
         this.todoService.setTodo(todo)
-        .then( result => result._body === "Created" ? this.todos.push(todo) : console.log("Error"));
+        .then( result => result.status === 201 ? this.pushTodo(todo, result.headers.get("Id")) : console.log("Error"));
+    }
+
+    private pushTodo(todo: Todo, id: number): void{
+        todo.id = id;
+        this.todos.push(todo);
+    }
+
+    deleteTodo(id: number): void {
+        this.todoService.removeTodo(id)
+        .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id != id) : console.log("Error"));
     }
 
     onSelect(todo: Todo): void {

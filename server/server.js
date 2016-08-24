@@ -25,6 +25,7 @@ module.exports = function(port, middleware, callback) {
         todo.isComplete = false;
         latestId++;
         todos.push(todo);
+        res.set("Id", todo.id);
         res.set("Location", "/api/todo/" + todo.id);
         res.sendStatus(201);
         changeId++;

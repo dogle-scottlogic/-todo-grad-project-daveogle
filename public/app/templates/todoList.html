@@ -9,12 +9,9 @@
         <ul id="todo-list">
             <li *ngFor="let todo of todos" [class.todo_item_complete] = "todo.isComplete" [class.todo_item_incomplete] = "!todo.isComplete">
                 {{todo.title}}
+                <button type="button" class="button" (click)="deleteTodo(todo.id)">Delete</button>
             </li>
         </ul>
-        <div *ngIf="selectedHero">
-            <h2>{{selecetedTodo.title}} details!</h2>
-            <div><label>id: </label>{{selectedTodo.id}}</div>
-        </div>
         <div class="container">
             <h3>Add A New Task</h3>
             <form *ngIf="active" (ngSubmit)="onSubmit()" #todoForm="ngForm">

@@ -1,9 +1,0 @@
-<div class="container">
-    <h3>Add A New Task</h3>
-    <form *ngIf="active" (ngSubmit)="onSubmit()" #todoForm="ngForm">
-        <input type="text" id="title" placeholder="What needs to be done?" autofocus
-        required
-        [(ngModel)]="model.title" name="title"/>
-        <button type="submit" class="button" [disabled]="!todoForm.form.valid">New Task</button>
-    </form>
-</div>
