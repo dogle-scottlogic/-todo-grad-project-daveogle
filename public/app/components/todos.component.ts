@@ -1,43 +1,44 @@
-import { Component, OnInit } from "@angular/core";
 import { TodoService } from "../services/todos.service";
-import {Observable} from 'rxjs/Rx';
+import { Component, OnInit } from "@angular/core";
+import {Observable} from "rxjs/Rx";
 
 export class Todo {
-    id: number;
-    isComplete: boolean;
-    title: string;
+    public id: number;
+    public isComplete: boolean;
+    public title: string;
     constructor(
         title: string
     ) { this.title = title; }
 }
 
 export class Error {
-    isError: boolean;
-    errorMessage: string;
-    errorCode: number;
-    errorText: string;
+    public errorCode: number;
+    public errorMessage: string;
+    public errorText: string;
+    public isError: boolean;
+
     constructor() { this.isError = false; }
 }
 
 @Component({
   selector: "my-todos",
-  templateUrl : "/app/templates/todoList.html"
+  templateUrl : "/app/templates/todoList.html",
 })
 
 export class TodosComponent implements OnInit {
-    todos: Todo[] = [];
-    selectedTodo: Todo;
-    error: Error = new Error();
-    model = new Todo("");
-    submitted = false;
-    active = true;
-    pageLoaded = false;
-    filterWord = "All";
-    latestChangeId = 0;
+    public todos: Todo[] = [];
+    public selectedTodo: Todo;
+    public error: Error = new Error();
+    public model = new Todo("");
+    public pageLoaded = false;
+    public filterWord = "All";
+    private latestChangeId = 0;
+    private submitted = false;
+    private active = true;
 
     constructor(private todoService: TodoService) { }
 
-    getTodos(): void {
+    public getTodos(): void {
         this.todoService
             .getTodos()
             .then( result => result.status === 200 ? this.todos = result.json() :
@@ -45,7 +46,7 @@ export class TodosComponent implements OnInit {
             .catch( result => this.createError("Failed to get list. Server returned ", result.status, result.statusText));
     }
 
-    addTodo(todo: Todo): void {
+    public addTodo(todo: Todo): void {
         this.latestChangeId++;
         this.todoService.setTodo(todo)
         .then( result => result.status === 201 ? this.pushTodo(todo, result.headers.get("Id")) :
@@ -53,22 +54,17 @@ export class TodosComponent implements OnInit {
         .catch( result => this.createError("Failed to create item. Server returned ", result.status, result.statusText));
     }
 
-    private pushTodo(todo: Todo, id: number): void{
-        todo.id = id;
-        this.todos.push(todo);
-    }
-
-    deleteTodo(id: number): void {
+    public deleteTodo(id: number): void {
         this.latestChangeId++;
         this.todoService.removeTodo(id)
-        .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id != id) :
+        .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id !== id) :
         this.createError("Failed to delete item. Server returned ", result.status, result.statusText))
         .catch( result => this.createError("Failed to delete item. Server returned ", result.status, result.statusText));
     }
 
-    completeTodo(id: number): void {
+    public completeTodo(id: number): void {
         this.latestChangeId++;
-        let elementPos = this.todos.map(function(x) {return x.id; }).indexOf(id);
+        let elementPos = this.todos.map(x => x.id).indexOf(id);
         let updateTodo = this.todos[elementPos];
         updateTodo.isComplete = true;
         this.todoService.updateTodo(updateTodo)
@@ -77,23 +73,23 @@ export class TodosComponent implements OnInit {
         .catch( result => this.createError("Failed to update item. Server returned ", result.status, result.statusText));
     }
 
-    onSelect(todo: Todo): void {
+    public onSelect(todo: Todo): void {
         this.selectedTodo = todo;
     }
 
-    onSubmit() {
+    public onSubmit() {
         this.submitted = true;
         this.addTodo(this.model);
         this.newTodo();
     }
 
-    newTodo(){
+    public newTodo() {
           this.model = new Todo("");
           this.active = false;
           setTimeout(() => this.active = true, 0);
     }
 
-    createError(message: string, code: number, text: string) {
+    public createError(message: string, code: number, text: string) {
         this.error.errorMessage = message;
         this.error.errorCode = code;
         this.error.errorText = text;
@@ -101,39 +97,43 @@ export class TodosComponent implements OnInit {
         this.latestChangeId--;
     }
 
-    countTodo() : number {
+    public countTodo(): number {
         return this.todos.filter(todo => todo.isComplete === false).length;
     }
 
-    filter(filterWord: string) {
+    public filter(filterWord: string) {
         this.filterWord = filterWord;
     }
 
-    clearComplete() : void {
+    public clearComplete(): void {
         this.todoService.removeComplete()
         .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => !todo.isComplete) :
         this.createError("Failed to delete items. Server returned ", result.status, result.statusText))
         .catch( result => this.createError("Failed to delete item. Server returned ", result.status, result.statusText));
     }
 
-    getLatestChange() : void {
-        console.log("Called");
+    public getLatestChange(): void {
          this.todoService.getLatestChangeId()
-         .then( result => result.status === 200 ? this.sync(result.text()) : console.log("Error fetching latest change"))
-        .catch(result => console.log("Error fetching latest change"));
+         .then( result => result.status === 200 ? this.sync(result.text()) : false)
+        .catch();
     }
 
-    sync(serverLatestChange: string): void {
-        if(parseInt(serverLatestChange) !== this.latestChangeId && this.latestChangeId !== 0) {
+    public sync(serverLatestChange: string): void {
+        if (parseInt(serverLatestChange, 10) !== this.latestChangeId && this.latestChangeId !== 0) {
             this.getTodos();
         }
-        this.latestChangeId = parseInt(serverLatestChange);
+        this.latestChangeId = parseInt(serverLatestChange, 10);
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.getTodos();
         this.pageLoaded = true;
         let timer = Observable.timer(10000, 10000);
         timer.subscribe(t => this.getLatestChange());
+    }
+
+    private pushTodo(todo: Todo, id: number): void {
+        todo.id = id;
+        this.todos.push(todo);
     }
 }

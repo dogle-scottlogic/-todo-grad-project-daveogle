@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
 var todos_service_1 = require("../services/todos.service");
-var Rx_1 = require('rxjs/Rx');
+var core_1 = require("@angular/core");
+var Rx_1 = require("rxjs/Rx");
 var Todo = (function () {
     function Todo(title) {
         this.title = title;
@@ -31,11 +31,11 @@ var TodosComponent = (function () {
         this.todos = [];
         this.error = new Error();
         this.model = new Todo("");
-        this.submitted = false;
-        this.active = true;
         this.pageLoaded = false;
         this.filterWord = "All";
         this.latestChangeId = 0;
+        this.submitted = false;
+        this.active = true;
     }
     TodosComponent.prototype.getTodos = function () {
         var _this = this;
@@ -53,15 +53,11 @@ var TodosComponent = (function () {
             _this.createError("Failed to create item. Server returned ", result.status, result.statusText); })
             .catch(function (result) { return _this.createError("Failed to create item. Server returned ", result.status, result.statusText); });
     };
-    TodosComponent.prototype.pushTodo = function (todo, id) {
-        todo.id = id;
-        this.todos.push(todo);
-    };
     TodosComponent.prototype.deleteTodo = function (id) {
         var _this = this;
         this.latestChangeId++;
         this.todoService.removeTodo(id)
-            .then(function (result) { return result.status === 200 ? _this.todos = _this.todos.filter(function (todo) { return todo.id != id; }) :
+            .then(function (result) { return result.status === 200 ? _this.todos = _this.todos.filter(function (todo) { return todo.id !== id; }) :
             _this.createError("Failed to delete item. Server returned ", result.status, result.statusText); })
             .catch(function (result) { return _this.createError("Failed to delete item. Server returned ", result.status, result.statusText); });
     };
@@ -112,16 +108,15 @@ var TodosComponent = (function () {
     };
     TodosComponent.prototype.getLatestChange = function () {
         var _this = this;
-        console.log("Called");
         this.todoService.getLatestChangeId()
-            .then(function (result) { return result.status === 200 ? _this.sync(result.text()) : console.log("Error fetching latest change"); })
-            .catch(function (result) { return console.log("Error fetching latest change"); });
+            .then(function (result) { return result.status === 200 ? _this.sync(result.text()) : false; })
+            .catch();
     };
     TodosComponent.prototype.sync = function (serverLatestChange) {
-        if (parseInt(serverLatestChange) !== this.latestChangeId && this.latestChangeId !== 0) {
+        if (parseInt(serverLatestChange, 10) !== this.latestChangeId && this.latestChangeId !== 0) {
             this.getTodos();
         }
-        this.latestChangeId = parseInt(serverLatestChange);
+        this.latestChangeId = parseInt(serverLatestChange, 10);
     };
     TodosComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -130,10 +125,14 @@ var TodosComponent = (function () {
         var timer = Rx_1.Observable.timer(10000, 10000);
         timer.subscribe(function (t) { return _this.getLatestChange(); });
     };
+    TodosComponent.prototype.pushTodo = function (todo, id) {
+        todo.id = id;
+        this.todos.push(todo);
+    };
     TodosComponent = __decorate([
         core_1.Component({
             selector: "my-todos",
-            templateUrl: "/app/templates/todoList.html"
+            templateUrl: "/app/templates/todoList.html",
         }), 
         __metadata('design:paramtypes', [todos_service_1.TodoService])
     ], TodosComponent);

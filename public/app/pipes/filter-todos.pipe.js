@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var FilterTodos = (function () {
     function FilterTodos() {
     }
@@ -17,13 +17,13 @@ var FilterTodos = (function () {
             case "Complete":
                 return list.filter(function (todo) { return todo.isComplete === true; });
             case "Incomplete":
-                return list.filter(function (todo) { return todo.isComplete != true; });
+                return list.filter(function (todo) { return todo.isComplete !== true; });
             default:
                 return list;
         }
     };
     FilterTodos = __decorate([
-        core_1.Pipe({ name: 'filterTodos', pure: false }), 
+        core_1.Pipe({ name: "filterTodos", pure: false }), 
         __metadata('design:paramtypes', [])
     ], FilterTodos);
     return FilterTodos;
