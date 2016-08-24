@@ -20,11 +20,11 @@
                 <button type="submit" class="button" [disabled]="!todoForm.form.valid">New Task</button>
             </form>
         </div>
-        <div id="filter_bar">
+        <div id="filter_bar" *ngIf="todos.length > 0">
             <h3>Filter buttons:</h3>
-                <button type="button" id="All" class="button" (click)="filter('All')">All</button>
-                <button type="button" id="Complete" class="button" (click)="filter('Complete')">Complete</button>
-                <button type="button" id="Active" class="button" (click)="filter('Incomplete')">Active</button>
+                <button type="button" id="All" [class.button_selected]="filterWord == 'All'" [class.button]="filterWord !== 'All'" (click)="filter('All')">All</button>
+                <button type="button" id="Complete" [class.button_selected]="filterWord == 'Complete'" [class.button]="filterWord !== 'Complete'" (click)="filter('Complete')">Complete</button>
+                <button type="button" id="Active" [class.button_selected]="filterWord == 'Incomplete'" [class.button]="filterWord !== 'Incomplete'" (click)="filter('Incomplete')">Active</button>
             <div id="filter_buttons">
             </div>
         </div>
