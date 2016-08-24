@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var todos_service_1 = require("../services/todos.service");
+var Rx_1 = require('rxjs/Rx');
 var Todo = (function () {
     function Todo(title) {
         this.title = title;
@@ -34,6 +35,7 @@ var TodosComponent = (function () {
         this.active = true;
         this.pageLoaded = false;
         this.filterWord = "All";
+        this.latestChangeId = 0;
     }
     TodosComponent.prototype.getTodos = function () {
         var _this = this;
@@ -45,6 +47,7 @@ var TodosComponent = (function () {
     };
     TodosComponent.prototype.addTodo = function (todo) {
         var _this = this;
+        this.latestChangeId++;
         this.todoService.setTodo(todo)
             .then(function (result) { return result.status === 201 ? _this.pushTodo(todo, result.headers.get("Id")) :
             _this.createError("Failed to create item. Server returned ", result.status, result.statusText); })
@@ -56,6 +59,7 @@ var TodosComponent = (function () {
     };
     TodosComponent.prototype.deleteTodo = function (id) {
         var _this = this;
+        this.latestChangeId++;
         this.todoService.removeTodo(id)
             .then(function (result) { return result.status === 200 ? _this.todos = _this.todos.filter(function (todo) { return todo.id != id; }) :
             _this.createError("Failed to delete item. Server returned ", result.status, result.statusText); })
@@ -63,6 +67,7 @@ var TodosComponent = (function () {
     };
     TodosComponent.prototype.completeTodo = function (id) {
         var _this = this;
+        this.latestChangeId++;
         var elementPos = this.todos.map(function (x) { return x.id; }).indexOf(id);
         var updateTodo = this.todos[elementPos];
         updateTodo.isComplete = true;
@@ -90,6 +95,7 @@ var TodosComponent = (function () {
         this.error.errorCode = code;
         this.error.errorText = text;
         this.error.isError = true;
+        this.latestChangeId--;
     };
     TodosComponent.prototype.countTodo = function () {
         return this.todos.filter(function (todo) { return todo.isComplete === false; }).length;
@@ -104,9 +110,25 @@ var TodosComponent = (function () {
             _this.createError("Failed to delete items. Server returned ", result.status, result.statusText); })
             .catch(function (result) { return _this.createError("Failed to delete item. Server returned ", result.status, result.statusText); });
     };
+    TodosComponent.prototype.getLatestChange = function () {
+        var _this = this;
+        console.log("Called");
+        this.todoService.getLatestChangeId()
+            .then(function (result) { return result.status === 200 ? _this.sync(result.text()) : console.log("Error fetching latest change"); })
+            .catch(function (result) { return console.log("Error fetching latest change"); });
+    };
+    TodosComponent.prototype.sync = function (serverLatestChange) {
+        if (parseInt(serverLatestChange) !== this.latestChangeId && this.latestChangeId !== 0) {
+            this.getTodos();
+        }
+        this.latestChangeId = parseInt(serverLatestChange);
+    };
     TodosComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.getTodos();
         this.pageLoaded = true;
+        var timer = Rx_1.Observable.timer(10000, 10000);
+        timer.subscribe(function (t) { return _this.getLatestChange(); });
     };
     TodosComponent = __decorate([
         core_1.Component({

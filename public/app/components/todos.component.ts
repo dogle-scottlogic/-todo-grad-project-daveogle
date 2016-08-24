@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { TodoService } from "../services/todos.service";
+import {Observable} from 'rxjs/Rx';
 
 export class Todo {
     id: number;
@@ -32,6 +33,7 @@ export class TodosComponent implements OnInit {
     active = true;
     pageLoaded = false;
     filterWord = "All";
+    latestChangeId = 0;
 
     constructor(private todoService: TodoService) { }
 
@@ -44,6 +46,7 @@ export class TodosComponent implements OnInit {
     }
 
     addTodo(todo: Todo): void {
+        this.latestChangeId++;
         this.todoService.setTodo(todo)
         .then( result => result.status === 201 ? this.pushTodo(todo, result.headers.get("Id")) :
         this.createError("Failed to create item. Server returned ", result.status, result.statusText))
@@ -56,6 +59,7 @@ export class TodosComponent implements OnInit {
     }
 
     deleteTodo(id: number): void {
+        this.latestChangeId++;
         this.todoService.removeTodo(id)
         .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id != id) :
         this.createError("Failed to delete item. Server returned ", result.status, result.statusText))
@@ -63,6 +67,7 @@ export class TodosComponent implements OnInit {
     }
 
     completeTodo(id: number): void {
+        this.latestChangeId++;
         let elementPos = this.todos.map(function(x) {return x.id; }).indexOf(id);
         let updateTodo = this.todos[elementPos];
         updateTodo.isComplete = true;
@@ -93,6 +98,7 @@ export class TodosComponent implements OnInit {
         this.error.errorCode = code;
         this.error.errorText = text;
         this.error.isError = true;
+        this.latestChangeId--;
     }
 
     countTodo() : number {
@@ -110,8 +116,24 @@ export class TodosComponent implements OnInit {
         .catch( result => this.createError("Failed to delete item. Server returned ", result.status, result.statusText));
     }
 
+    getLatestChange() : void {
+        console.log("Called");
+         this.todoService.getLatestChangeId()
+         .then( result => result.status === 200 ? this.sync(result.text()) : console.log("Error fetching latest change"))
+        .catch(result => console.log("Error fetching latest change"));
+    }
+
+    sync(serverLatestChange: string): void {
+        if(parseInt(serverLatestChange) !== this.latestChangeId && this.latestChangeId !== 0) {
+            this.getTodos();
+        }
+        this.latestChangeId = parseInt(serverLatestChange);
+    }
+
     ngOnInit(): void {
         this.getTodos();
         this.pageLoaded = true;
+        let timer = Observable.timer(10000, 10000);
+        timer.subscribe(t => this.getLatestChange());
     }
 }

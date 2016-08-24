@@ -22,6 +22,11 @@ var TodoService = (function () {
             .toPromise()
             .catch(this.handleError);
     };
+    TodoService.prototype.getLatestChangeId = function () {
+        return this.http.get("/api/changed")
+            .toPromise()
+            .catch(this.handleError);
+    };
     // Post
     TodoService.prototype.setTodo = function (todo) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });

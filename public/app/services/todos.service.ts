@@ -19,6 +19,12 @@ export class TodoService {
                .catch(this.handleError);
     }
 
+    getLatestChangeId(): Promise<Response> {
+        return this.http.get("/api/changed")
+               .toPromise()
+               .catch(this.handleError);
+    }
+
     // Post
     setTodo(todo: Todo): Promise<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
