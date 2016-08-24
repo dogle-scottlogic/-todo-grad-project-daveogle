@@ -22,6 +22,7 @@ var TodosComponent = (function () {
         this.model = new Todo("");
         this.submitted = false;
         this.active = true;
+        this.pageLoaded = false;
     }
     TodosComponent.prototype.getTodos = function () {
         var _this = this;
@@ -67,6 +68,7 @@ var TodosComponent = (function () {
     };
     TodosComponent.prototype.ngOnInit = function () {
         this.getTodos();
+        this.pageLoaded = true;
     };
     TodosComponent = __decorate([
         core_1.Component({

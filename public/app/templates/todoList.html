@@ -5,16 +5,16 @@
 
 </div>
 <section>
-    <h2 id="todo-list-placeholder">Loading...</h2>
+    <h2 *ngIf="!pageLoaded" id="todo-list-placeholder">Loading...</h2>
         <ul id="todo-list">
             <li *ngFor="let todo of todos" [class.todo_item_complete] = "todo.isComplete" [class.todo_item_incomplete] = "!todo.isComplete">
-                {{todo.title}} : {{todo.isComplete}}
+                {{todo.title}}
                 <button type="button" id="delete_{{todo.id}}" class="button" (click)="deleteTodo(todo.id)">Delete</button>
                 <button type="button" class="button" (click)="completeTodo(todo.id)">Complete</button>
             </li>
         </ul>
         <div class="container">
-            <h3>Add A New Task</h3>
+        <br>
             <form *ngIf="active" (ngSubmit)="onSubmit()" #todoForm="ngForm">
                 <input type="text" id="title" placeholder="What needs to be done?" autofocus
                 required

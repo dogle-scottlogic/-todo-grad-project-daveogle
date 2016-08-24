@@ -21,6 +21,7 @@ export class TodosComponent implements OnInit {
     model = new Todo("");
     submitted = false;
     active = true;
+    pageLoaded = false;
 
     constructor(private todoService: TodoService) { }
 
@@ -71,5 +72,6 @@ export class TodosComponent implements OnInit {
 
     ngOnInit(): void {
         this.getTodos();
+        this.pageLoaded = true;
     }
 }
