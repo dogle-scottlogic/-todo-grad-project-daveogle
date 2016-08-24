@@ -52,7 +52,9 @@ module.exports.reportCoverage = function() {
 
 module.exports.navigateToSite = function() {
     driver.get(baseUrl);
-    driver.sleep(1000);
+    driver.wait(webdriver.until.elementLocated(webdriver.By.id("new-todo")),
+    10000,
+    "Could not locate the new-todo element within the time specified");
 };
 
 module.exports.getTitleText = function() {
