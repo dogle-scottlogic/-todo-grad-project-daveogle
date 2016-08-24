@@ -8,8 +8,9 @@
     <h2 id="todo-list-placeholder">Loading...</h2>
         <ul id="todo-list">
             <li *ngFor="let todo of todos" [class.todo_item_complete] = "todo.isComplete" [class.todo_item_incomplete] = "!todo.isComplete">
-                {{todo.title}}
-                <button type="button" class="button" (click)="deleteTodo(todo.id)">Delete</button>
+                {{todo.title}} : {{todo.isComplete}}
+                <button type="button" id="delete_{{todo.id}}" class="button" (click)="deleteTodo(todo.id)">Delete</button>
+                <button type="button" class="button" (click)="completeTodo(todo.id)">Complete</button>
             </li>
         </ul>
         <div class="container">

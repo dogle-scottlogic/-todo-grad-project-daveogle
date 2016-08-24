@@ -32,12 +32,22 @@ var TodoService = (function () {
             .then(function (res) { return res; })
             .catch(this.handleError);
     };
+    // Delete
     TodoService.prototype.removeTodo = function (id) {
-        var headers = new http_1.Headers();
-        headers.append("Content-Type", "application/json");
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var deleteUrl = this.todosUrl + id;
         return this.http.delete(deleteUrl, { headers: headers, body: "" })
             .toPromise()
+            .catch(this.handleError);
+    };
+    // Put
+    TodoService.prototype.updateTodo = function (todo) {
+        var headers = new http_1.Headers({ "Content-Type": "application/json" });
+        var putUrl = this.todosUrl + todo.id;
+        return this.http
+            .put(putUrl, JSON.stringify(todo), { headers: headers })
+            .toPromise()
+            .then(function (res) { return res; })
             .catch(this.handleError);
     };
     TodoService.prototype.handleError = function (error) {

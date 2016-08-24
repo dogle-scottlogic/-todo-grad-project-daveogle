@@ -30,16 +30,25 @@ export class TodoService {
              .catch(this.handleError);
      }
 
+     // Delete
      removeTodo(id: number): Promise<Response> {
-         let headers = new Headers();
-         headers.append("Content-Type", "application/json");
+         let headers = new Headers({'Content-Type': 'application/json'});
          let deleteUrl = this.todosUrl + id;
-
          return this.http.delete(deleteUrl, {headers: headers, body: ""})
          .toPromise()
          .catch(this.handleError);
      }
 
+     // Put
+     updateTodo(todo: Todo): Promise<any> {
+         let headers = new Headers({"Content-Type": "application/json"});
+         let putUrl = this.todosUrl + todo.id;
+         return this.http
+              .put(putUrl, JSON.stringify(todo), {headers: headers})
+              .toPromise()
+              .then(res => res)
+              .catch(this.handleError);
+     }
 
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error);

@@ -43,6 +43,14 @@ var TodosComponent = (function () {
         this.todoService.removeTodo(id)
             .then(function (result) { return result.status === 200 ? _this.todos = _this.todos.filter(function (todo) { return todo.id != id; }) : console.log("Error"); });
     };
+    TodosComponent.prototype.completeTodo = function (id) {
+        var _this = this;
+        var elementPos = this.todos.map(function (x) { return x.id; }).indexOf(id);
+        var updateTodo = this.todos[elementPos];
+        updateTodo.isComplete = true;
+        this.todoService.updateTodo(updateTodo)
+            .then(function (result) { return result.status === 200 ? _this.todos[elementPos].isComplete = true : console.log("Error"); });
+    };
     TodosComponent.prototype.onSelect = function (todo) {
         this.selectedTodo = todo;
     };

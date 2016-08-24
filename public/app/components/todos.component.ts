@@ -45,6 +45,14 @@ export class TodosComponent implements OnInit {
         .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id != id) : console.log("Error"));
     }
 
+    completeTodo(id: number): void {
+        let elementPos = this.todos.map(function(x) {return x.id; }).indexOf(id);
+        let updateTodo = this.todos[elementPos];
+        updateTodo.isComplete = true;
+        this.todoService.updateTodo(updateTodo)
+        .then( result => result.status === 200 ? this.todos[elementPos].isComplete = true : console.log("Error"));
+    }
+
     onSelect(todo: Todo): void {
         this.selectedTodo = todo;
     }
