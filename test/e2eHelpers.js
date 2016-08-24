@@ -36,11 +36,11 @@ module.exports.teardownServer = function(done) {
 };
 
 module.exports.teardownDriver = function() {
-    if (gatheringCoverage) {
+    /*if (gatheringCoverage) {
         driver.executeScript("return __coverage__;").then(function (coverage) {
             collector.add(coverage);
         });
-    }
+    }*/
     driver.quit();
 };
 
@@ -52,6 +52,7 @@ module.exports.reportCoverage = function() {
 
 module.exports.navigateToSite = function() {
     driver.get(baseUrl);
+    driver.sleep(1000);
 };
 
 module.exports.getTitleText = function() {

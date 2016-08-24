@@ -58,8 +58,8 @@ var TodosComponent = (function () {
         this.latestChangeId++;
         this.todoService.removeTodo(id)
             .then(function (result) { return result.status === 200 ? _this.todos = _this.todos.filter(function (todo) { return todo.id !== id; }) :
-            _this.createError("Failed to delete item. Server returned ", result.status, result.statusText); })
-            .catch(function (result) { return _this.createError("Failed to delete item. Server returned ", result.status, result.statusText); });
+            _this.createError("Failed to delete list item. Server returned ", result.status, result.statusText); })
+            .catch(function (result) { return _this.createError("Failed to delete list item. Server returned ", result.status, result.statusText); });
     };
     TodosComponent.prototype.completeTodo = function (id) {
         var _this = this;

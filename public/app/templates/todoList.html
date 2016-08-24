@@ -3,30 +3,31 @@
 </header>
 <div id="count-label">You have {{ (todos | filterTodos : "Incomplete").length}} tasks left to do!</div>
 <section>
-    <h2 *ngIf="!pageLoaded" id="todo-list-placeholder">Loading...</h2>
+    <!-- <h2 *ngIf="!pageLoaded" id="todo-list-placeholder">Loading...</h2> -->
+    <h2 [style.display]="pageLoaded?'none':'inherit'" id="todo-list-placeholder">Loading...</h2>
         <ul id="todo-list">
             <li *ngFor="let todo of todos | filterTodos : filterWord" [class.todo_item_complete] = "todo.isComplete" [class.todo_item_incomplete] = "!todo.isComplete">
                 {{todo.title}}
                 <button type="button" id="delete_{{todo.id}}" class="button" (click)="deleteTodo(todo.id)">Delete</button>
-                <button type="button" class="button" (click)="completeTodo(todo.id)">Complete</button>
+                <button type="button" id="complete_{{todo.id}}" class="button" (click)="completeTodo(todo.id)">Complete</button>
             </li>
         </ul>
-        <button type="button" *ngIf="(todos | filterTodos : 'Complete').length > 0" class="button" (click)="clearComplete()">Clear Complete</button>
+        <button type="button" id="clearCompleteButton" *ngIf="(todos | filterTodos : 'Complete').length > 0 && filterWord !== 'Incomplete'" class="button" (click)="clearComplete()">Clear Complete</button>
         <div class="container">
         <br>
             <form *ngIf="active" (ngSubmit)="onSubmit()" #todoForm="ngForm">
-                <input type="text" id="title" placeholder="What needs to be done?" autofocus
+                <input type="text" id="new-todo" placeholder="What needs to be done?" autofocus
                 required
                 [(ngModel)]="model.title" name="title"/>
-                <button type="submit" class="button" [disabled]="!todoForm.form.valid">New Task</button>
+                <button type="submit" id="submit-todo" class="button" [disabled]="!todoForm.form.valid">New Task</button>
             </form>
         </div>
         <div id="filter_bar" *ngIf="todos.length > 0">
-            <h3>Filter buttons:</h3>
+            <div id="filter_buttons">
+                <h3>Filter buttons:</h3>
                 <button type="button" id="All" [class.button_selected]="filterWord == 'All'" [class.button]="filterWord !== 'All'" (click)="filter('All')">All</button>
                 <button type="button" id="Complete" [class.button_selected]="filterWord == 'Complete'" [class.button]="filterWord !== 'Complete'" (click)="filter('Complete')">Complete</button>
                 <button type="button" id="Active" [class.button_selected]="filterWord == 'Incomplete'" [class.button]="filterWord !== 'Incomplete'" (click)="filter('Incomplete')">Active</button>
-            <div id="filter_buttons">
             </div>
         </div>
         <div id="error" class="error" *ngIf="error.isError">{{error.errorMessage}}{{error.errorCode}} - {{error.errorText}}</div>

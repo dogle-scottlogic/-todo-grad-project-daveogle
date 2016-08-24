@@ -58,8 +58,8 @@ export class TodosComponent implements OnInit {
         this.latestChangeId++;
         this.todoService.removeTodo(id)
         .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => todo.id !== id) :
-        this.createError("Failed to delete item. Server returned ", result.status, result.statusText))
-        .catch( result => this.createError("Failed to delete item. Server returned ", result.status, result.statusText));
+        this.createError("Failed to delete list item. Server returned ", result.status, result.statusText))
+        .catch( result => this.createError("Failed to delete list item. Server returned ", result.status, result.statusText));
     }
 
     public completeTodo(id: number): void {
