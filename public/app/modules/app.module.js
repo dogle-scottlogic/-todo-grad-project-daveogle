@@ -14,6 +14,7 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require("../components/app.component");
 var todos_component_1 = require("../components/todos.component");
+var filter_todos_pipe_1 = require("../pipes/filter-todos.pipe");
 var todos_service_1 = require("../services/todos.service");
 var AppModule = (function () {
     function AppModule() {
@@ -27,7 +28,8 @@ var AppModule = (function () {
             ],
             declarations: [
                 app_component_1.AppComponent,
-                todos_component_1.TodosComponent
+                todos_component_1.TodosComponent,
+                filter_todos_pipe_1.FilterTodos
             ],
             providers: [todos_service_1.TodoService],
             bootstrap: [app_component_1.AppComponent]

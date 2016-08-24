@@ -27,11 +27,13 @@ exports.Error = Error;
 var TodosComponent = (function () {
     function TodosComponent(todoService) {
         this.todoService = todoService;
+        this.todos = [];
         this.error = new Error();
         this.model = new Todo("");
         this.submitted = false;
         this.active = true;
         this.pageLoaded = false;
+        this.filterWord = "All";
     }
     TodosComponent.prototype.getTodos = function () {
         var _this = this;
@@ -88,6 +90,12 @@ var TodosComponent = (function () {
         this.error.errorCode = code;
         this.error.errorText = text;
         this.error.isError = true;
+    };
+    TodosComponent.prototype.countTodo = function () {
+        return this.todos.filter(function (todo) { return todo.isComplete === false; }).length;
+    };
+    TodosComponent.prototype.filter = function (filterWord) {
+        this.filterWord = filterWord;
     };
     TodosComponent.prototype.ngOnInit = function () {
         this.getTodos();

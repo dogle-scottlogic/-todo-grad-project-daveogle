@@ -5,6 +5,7 @@ import { HttpModule }     from '@angular/http';
 
 import { AppComponent }  from "../components/app.component";
 import { TodosComponent }  from "../components/todos.component";
+import { FilterTodos } from "../pipes/filter-todos.pipe";
 
 import { TodoService }  from "../services/todos.service";
 
@@ -16,7 +17,8 @@ import { TodoService }  from "../services/todos.service";
     ],
     declarations: [
         AppComponent,
-        TodosComponent
+        TodosComponent,
+        FilterTodos
     ],
     providers: [TodoService],
     bootstrap: [ AppComponent ]

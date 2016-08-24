@@ -24,13 +24,14 @@ export class Error {
 })
 
 export class TodosComponent implements OnInit {
-    todos: Todo[];
+    todos: Todo[] = [];
     selectedTodo: Todo;
     error: Error = new Error();
     model = new Todo("");
     submitted = false;
     active = true;
     pageLoaded = false;
+    filterWord = "All";
 
     constructor(private todoService: TodoService) { }
 
@@ -92,6 +93,14 @@ export class TodosComponent implements OnInit {
         this.error.errorCode = code;
         this.error.errorText = text;
         this.error.isError = true;
+    }
+
+    countTodo() : number {
+        return this.todos.filter(todo => todo.isComplete === false).length;
+    }
+
+    filter(filterWord: string) {
+        this.filterWord = filterWord;
     }
 
     ngOnInit(): void {
