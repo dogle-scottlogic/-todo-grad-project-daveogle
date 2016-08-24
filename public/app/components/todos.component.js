@@ -97,6 +97,13 @@ var TodosComponent = (function () {
     TodosComponent.prototype.filter = function (filterWord) {
         this.filterWord = filterWord;
     };
+    TodosComponent.prototype.clearComplete = function () {
+        var _this = this;
+        this.todoService.removeComplete()
+            .then(function (result) { return result.status === 200 ? _this.todos = _this.todos.filter(function (todo) { return !todo.isComplete; }) :
+            _this.createError("Failed to delete items. Server returned ", result.status, result.statusText); })
+            .catch(function (result) { return _this.createError("Failed to delete item. Server returned ", result.status, result.statusText); });
+    };
     TodosComponent.prototype.ngOnInit = function () {
         this.getTodos();
         this.pageLoaded = true;

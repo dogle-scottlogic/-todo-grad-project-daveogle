@@ -103,6 +103,13 @@ export class TodosComponent implements OnInit {
         this.filterWord = filterWord;
     }
 
+    clearComplete() : void {
+        this.todoService.removeComplete()
+        .then( result => result.status === 200 ? this.todos = this.todos.filter(todo => !todo.isComplete) :
+        this.createError("Failed to delete items. Server returned ", result.status, result.statusText))
+        .catch( result => this.createError("Failed to delete item. Server returned ", result.status, result.statusText));
+    }
+
     ngOnInit(): void {
         this.getTodos();
         this.pageLoaded = true;

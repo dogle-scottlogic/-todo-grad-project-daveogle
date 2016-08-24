@@ -38,6 +38,14 @@ export class TodoService {
          .catch(this.handleError);
      }
 
+     removeComplete(): Promise<Response> {
+         let headers = new Headers({'Content-Type': 'application/json'});
+         let deleteUrl = this.todosUrl + "complete";
+         return this.http.delete(deleteUrl, {headers: headers, body: ""})
+         .toPromise()
+         .catch(this.handleError);
+     }
+
      // Put
      updateTodo(todo: Todo): Promise<any> {
          let headers = new Headers({"Content-Type": "application/json"});

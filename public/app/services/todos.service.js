@@ -39,6 +39,13 @@ var TodoService = (function () {
             .toPromise()
             .catch(this.handleError);
     };
+    TodoService.prototype.removeComplete = function () {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var deleteUrl = this.todosUrl + "complete";
+        return this.http.delete(deleteUrl, { headers: headers, body: "" })
+            .toPromise()
+            .catch(this.handleError);
+    };
     // Put
     TodoService.prototype.updateTodo = function (todo) {
         var headers = new http_1.Headers({ "Content-Type": "application/json" });
