@@ -13,7 +13,7 @@ testing.describe("end to end", function() {
     });
 
     // Page load
-    testing.describe("on page load", function() {
+    testing.describe.only("on page load", function() {
         testing.it("displays TODO title", function() {
             helpers.navigateToSite();
             helpers.getTitleText().then(function(text) {
