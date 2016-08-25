@@ -25,6 +25,16 @@
   },
   "homepage": "https://github.com/joebandenburg/todo-grad-project",
   "devDependencies": {
+
+  },
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "express": "^4.12.4",
+    "underscore": "^1.8.3",
+    "whatwg-fetch": "^1.0.0",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4",
+    "concurrently": "^2.0.0",
     "@angular/common": "2.0.0-rc.5",
     "@angular/compiler": "2.0.0-rc.5",
     "@angular/core": "2.0.0-rc.5",
@@ -56,14 +66,5 @@
     "systemjs": "0.19.27",
     "tslint": "^3.15.1",
     "zone.js": "^0.6.12"
-  },
-  "dependencies": {
-    "body-parser": "^1.12.4",
-    "express": "^4.12.4",
-    "underscore": "^1.8.3",
-    "whatwg-fetch": "^1.0.0",
-    "typescript": "^1.8.10",
-    "typings": "^1.0.4",
-    "concurrently": "^2.0.0"
   }
 }
