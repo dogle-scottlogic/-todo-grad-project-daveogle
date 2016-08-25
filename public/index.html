@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>TODO List</title>
-        <link href="main.css" rel="stylesheet" type="text/css">
-        <link rel="icon" type="image/ico" href="favicon.ico">
-    </head>
-    <body>
-        <header>
-            <h1>TODO List</h1>
-        </header>
-        <div id="count-label">
+  <head>
+    <title>Todo Grad Project</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" type="image/ico" href="favicon.ico">
+    <!-- 1. Load libraries -->
+    <!-- IE required polyfill -->
+    <!-- 1. Load libraries -->
+   <!-- Polyfill(s) for older browsers -->
+  <script src="lib/core-js/client/shim.min.js"></script>
+  <script src="lib/zone.js/dist/zone.js"></script>
+  <script src="lib/reflect-metadata/Reflect.js"></script>
+  <script src="lib/systemjs/dist/system.src.js"></script>
 
-        </div>
-        <section>
-            <h2 id="todo-list-placeholder">Loading...</h2>
-            <ul id="todo-list"></ul>
-            <form id="todo-form">
-                <input id="new-todo" placeholder="What needs to be done?" autofocus>
-                <input id="submit-todo" class="button" type="submit" value="Create">
-            </form>
-            <div id="filter_bar">
-                <h3>Filter buttons:</h3>
-                <div id="filter_buttons">
-                </div>
-            </div>
-            <div id="error"></div>
-        </section>
-        <script type="text/javascript" src="main.js"></script>
-    </body>
+  <!-- 2. Configure SystemJS -->
+  <script src="/systemjs.config.js"></script>
+  <script>
+    System.import('app').catch(function(err){ console.error(err); });
+  </script>
+
+  <!-- 3. Display the application -->
+  <body>
+    <my-app>Loading...</my-app>
+  </body>
+
 </html>

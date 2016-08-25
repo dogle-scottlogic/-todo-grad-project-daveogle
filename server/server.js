@@ -1,4 +1,5 @@
 var express = require("express");
+var path = require("path");
 var bodyParser = require("body-parser");
 var _ = require("underscore");
 var fetch = require("whatwg-fetch");
@@ -9,7 +10,8 @@ module.exports = function(port, middleware, callback) {
     if (middleware) {
         app.use(middleware);
     }
-    app.use(express.static("public"));
+    app.use("/", express.static(__dirname + "/../public"));
+    app.use("/lib", express.static(__dirname + "/../node_modules"));
     app.use(bodyParser.json());
 
     var changeId = 0;
@@ -23,6 +25,7 @@ module.exports = function(port, middleware, callback) {
         todo.isComplete = false;
         latestId++;
         todos.push(todo);
+        res.set("Id", todo.id);
         res.set("Location", "/api/todo/" + todo.id);
         res.sendStatus(201);
         changeId++;

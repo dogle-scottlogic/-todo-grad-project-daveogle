@@ -5,18 +5,33 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-mocha-istanbul");
     grunt.loadNpmTasks("grunt-express-server");
     grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-tslint");
 
     var testOutputLocation = process.env.CIRCLE_TEST_REPORTS || "test_output";
     var artifactsLocation = "build_artifacts";
     grunt.initConfig({
         jshint: {
-            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js", "public/**/*.js"],
+            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js"],
             options: {
                 jshintrc: true
             }
         },
         jscs: {
-            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js", "public/**/*.js"]
+            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js"]
+        },
+        tslint: {
+            options: {
+                // can be a configuration object or a filepath to tslint.json
+                configuration: "tslint.json",
+                // If set to true, tslint errors will be reported, but not fail the task
+                // If set to false, tslint errors will be reported, and the task will fail
+                force: false
+            },
+            files: {
+                src: [
+                    "public/**/*.ts"
+                ]
+            }
         },
         mochaTest: {
             test: {
@@ -111,8 +126,8 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask("check", ["jshint", "jscs"]);
-    grunt.registerTask("test", ["check", "mochaTest:test", "mocha_istanbul:test", "istanbul_report",
+    grunt.registerTask("check", ["jshint", "jscs", "tslint"]);
+    grunt.registerTask("test", ["check", "mochaTest:test", "mocha_istanbul:test" , "istanbul_report",
         "istanbul_check_coverage"]);
     grunt.registerTask("ci-test", ["check", "mochaTest:ci", "mocha_istanbul:ci", "istanbul_report",
         "istanbul_check_coverage"]);

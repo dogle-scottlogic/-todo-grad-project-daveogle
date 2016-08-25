@@ -36,11 +36,11 @@ module.exports.teardownServer = function(done) {
 };
 
 module.exports.teardownDriver = function() {
-    if (gatheringCoverage) {
+    /*if (gatheringCoverage) {
         driver.executeScript("return __coverage__;").then(function (coverage) {
             collector.add(coverage);
         });
-    }
+    }*/
     driver.quit();
 };
 
@@ -52,6 +52,9 @@ module.exports.reportCoverage = function() {
 
 module.exports.navigateToSite = function() {
     driver.get(baseUrl);
+    driver.wait(webdriver.until.elementLocated(webdriver.By.id("new-todo")),
+    10000,
+    "Could not locate the new-todo element within the time specified");
 };
 
 module.exports.getTitleText = function() {

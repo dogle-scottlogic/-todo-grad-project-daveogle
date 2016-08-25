@@ -9,7 +9,7 @@ testing.describe("end to end", function() {
     testing.afterEach(helpers.teardownServer);
     testing.after(function() {
         helpers.teardownDriver();
-        helpers.reportCoverage();
+        //helpers.reportCoverage();
     });
 
     // Page load
@@ -397,8 +397,8 @@ testing.describe("end to end", function() {
     testing.describe("On selecting a filter", function() {
         testing.it("no filter option should be visable with no todo items", function() {
             helpers.navigateToSite();
-            helpers.getElementStyleById("filter_bar").then(function(style) {
-                assert.equal(style, "display: none;");
+            helpers.elementExistsById("filter_bar").then(function(exist) {
+                assert.isFalse(exist);
             });
         });
         testing.it("all filter options should be visable with one or more todo item", function() {
