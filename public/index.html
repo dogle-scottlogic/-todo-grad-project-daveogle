@@ -15,11 +15,8 @@
   <script src="lib/systemjs/dist/system.src.js"></script>
 
   <!-- 2. Configure SystemJS -->
-  <script src="lib/systemjs.config.js"></script>
+  <script src="/systemjs.config.js"></script>
   <script>
-  SystemJS.config({
-      baseURL: '/lib'
-    });
     System.import('app').catch(function(err){ console.error(err); });
   </script>
 
